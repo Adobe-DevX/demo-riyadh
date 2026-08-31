@@ -1,12 +1,20 @@
 import { decorateIcons } from '../../scripts/aem.js';
 
-export default function decorate(block) {
-  const row = block.querySelector(':scope > div');
-  const [videoCell, posterCell, textCell] = row.children;
+// Unlike image references, DAM video references aren't rewritten onto the media bus,
+// so a raw /content/dam path only resolves against the AEM publish origin.
+const AEM_ASSET_ORIGIN = 'https://publish-p220753-e2271497.adobeaemcloud.com';
 
-  const videoLink = videoCell.querySelector('a');
-  const poster = posterCell.querySelector('img');
-  const caption = textCell.innerHTML;
+function resolveAssetHref(href) {
+  return href && href.startsWith('/content/dam/') ? `${AEM_ASSET_ORIGIN}${href}` : href;
+}
+
+export default function decorate(block) {
+  const videoLink = block.querySelector('a[href]');
+  const poster = block.querySelector('picture img, img');
+  const textCell = [...block.children].find(
+    (cell) => !cell.contains(videoLink) && !cell.contains(poster),
+  );
+  const caption = textCell ? textCell.innerHTML : '';
 
   const video = document.createElement('video');
   video.muted = true;
@@ -17,7 +25,7 @@ export default function decorate(block) {
   if (poster) video.poster = poster.src;
   if (videoLink) {
     const source = document.createElement('source');
-    source.src = videoLink.href;
+    source.src = resolveAssetHref(videoLink.getAttribute('href'));
     source.type = 'video/mp4';
     video.append(source);
   }
