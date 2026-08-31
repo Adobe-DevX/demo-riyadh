@@ -37,6 +37,10 @@
             {
               "name": "Search",
               "value": "search"
+            },
+            {
+              "name": "Video",
+              "value": "video"
             }
           ]
         }
@@ -55,7 +59,8 @@
         "cards",
         "columns",
         "fragment",
-        "search"
+        "search",
+        "video"
       ]
     }
   ]

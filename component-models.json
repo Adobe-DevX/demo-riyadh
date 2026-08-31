@@ -140,6 +140,10 @@
           {
             "name": "Search",
             "value": "search"
+          },
+          {
+            "name": "Video",
+            "value": "video"
           }
         ]
       }
@@ -235,6 +239,32 @@
         "name": "value",
         "label": "Value",
         "value": ""
+      }
+    ]
+  },
+  {
+    "id": "video",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "video",
+        "label": "Video",
+        "multi": false
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "poster",
+        "label": "Poster Image",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "text",
+        "value": "",
+        "label": "Text"
       }
     ]
   }
