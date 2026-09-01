@@ -188,6 +188,36 @@
     ]
   },
   {
+    "id": "destination",
+    "fields": [
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "style",
+        "label": "Style",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default (Image Top)",
+            "value": "default"
+          },
+          {
+            "name": "Image Bottom",
+            "value": "image-bottom"
+          },
+          {
+            "name": "City Only",
+            "value": "title-only"
+          },
+          {
+            "name": "Text Only",
+            "value": "text-only"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "fragment",
     "fields": [
       {
@@ -239,6 +269,57 @@
         "name": "value",
         "label": "Value",
         "value": ""
+      }
+    ]
+  },
+  {
+    "id": "teaser",
+    "fields": [
+      {
+        "component": "aem-content-fragment",
+        "valueType": "string",
+        "name": "fragmentPath",
+        "label": "Teaser (Content Fragment)",
+        "validation": {
+          "rootPath": "/content/dam/riyadh/content-fragments/teasers"
+        }
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "style",
+        "label": "Style",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default (Image Top)",
+            "value": "default"
+          },
+          {
+            "name": "Image Bottom",
+            "value": "image-bottom"
+          },
+          {
+            "name": "Image Left",
+            "value": "image-left"
+          },
+          {
+            "name": "Image Right",
+            "value": "image-right"
+          },
+          {
+            "name": "Image Background",
+            "value": "image-background"
+          },
+          {
+            "name": "Title Only",
+            "value": "title-only"
+          },
+          {
+            "name": "Text Only",
+            "value": "text-only"
+          }
+        ]
       }
     ]
   },

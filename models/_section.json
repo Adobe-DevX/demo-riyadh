@@ -60,7 +60,9 @@
         "columns",
         "fragment",
         "search",
-        "video"
+        "video",
+        "teaser",
+        "destination"
       ]
     }
   ]

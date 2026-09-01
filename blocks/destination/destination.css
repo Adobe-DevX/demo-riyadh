@@ -1,0 +1,168 @@
+/* let the carousel span the full screen width, breaking out of the section's max-width container */
+main > .section:has(.destination) > div {
+  max-width: none;
+  padding: 0;
+}
+
+.destination {
+  position: relative;
+  overflow: hidden;
+}
+
+.destination-track {
+  display: grid;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.destination-card {
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--background-color);
+}
+
+/* stacking every slide in the same grid cell makes the grid track — and so the carousel's
+   height — auto-size to the tallest slide, with no JS measurement */
+.destination-track > .destination-card {
+  grid-area: 1 / 1;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+.destination-track > .destination-card.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.destination-card-image {
+  line-height: 0;
+}
+
+.destination-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.destination-card-body {
+  padding: 16px;
+}
+
+.destination-card-city {
+  margin: 0 0 4px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.destination-card-country {
+  margin: 0;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+}
+
+.destination-indicators {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.destination-indicators button {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: rgb(255 255 255 / 50%);
+  cursor: pointer;
+}
+
+.destination-indicators button.active {
+  background-color: #fff;
+}
+
+.destination-control {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 50%;
+  background-color: rgb(0 0 0 / 30%);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.destination-control-prev {
+  left: 16px;
+}
+
+.destination-control-next {
+  right: 16px;
+}
+
+.destination-arrow-icon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 2px solid currentcolor;
+  border-width: 2px 2px 0 0;
+}
+
+.destination-control-prev .destination-arrow-icon {
+  margin-left: 4px;
+  transform: rotate(-135deg);
+}
+
+.destination-control-next .destination-arrow-icon {
+  margin-right: 4px;
+  transform: rotate(45deg);
+}
+
+@media (width >= 900px) {
+  .destination-control {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Style variants: each reorders/hides the same image + city + country markup rather than
+   changing what gets rendered, so styling stays purely CSS-driven. */
+.destination-card.style-image-bottom .destination-card-link {
+  display: flex;
+  flex-direction: column;
+}
+
+.destination-card.style-image-bottom .destination-card-image {
+  order: 2;
+}
+
+.destination-card.style-image-bottom .destination-card-body {
+  order: 1;
+}
+
+.destination-card.style-title-only .destination-card-image,
+.destination-card.style-title-only .destination-card-country {
+  display: none;
+}
+
+.destination-card.style-text-only .destination-card-image {
+  display: none;
+}
