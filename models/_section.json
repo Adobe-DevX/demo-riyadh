@@ -33,6 +33,26 @@
             {
               "name": "Highlight",
               "value": "highlight"
+            },
+            {
+              "name": "Search",
+              "value": "search"
+            },
+            {
+              "name": "Video",
+              "value": "video"
+            },
+            {
+              "name": "Winter Getaway",
+              "value": "winter-getaway"
+            },
+            {
+              "name": "Destination Carousel",
+              "value": "destination-carousel"
+            },
+            {
+              "name": "Cargo Section",
+              "value": "cargo-section"
             }
           ]
         }
@@ -50,7 +70,11 @@
         "hero",
         "cards",
         "columns",
-        "fragment"
+        "fragment",
+        "search",
+        "video",
+        "teaser",
+        "destination"
       ]
     }
   ]

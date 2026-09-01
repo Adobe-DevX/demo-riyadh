@@ -1,0 +1,336 @@
+/* let the carousel span the full screen width, breaking out of the section's max-width
+   container — except for the destination-carousel section style (see bottom of file), which
+   keeps the standard contained width instead */
+main > .section:not(.destination-carousel):has(.destination) > div {
+  max-width: none;
+  padding: 0;
+}
+
+.destination {
+  position: relative;
+  overflow: hidden;
+}
+
+.destination-track {
+  display: grid;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.destination-card {
+  border: 1px solid #dadada;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--background-color);
+}
+
+/* stacking every slide in the same grid cell makes the grid track — and so the carousel's
+   height — auto-size to the tallest slide, with no JS measurement */
+.destination-track > .destination-card {
+  grid-area: 1 / 1;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+.destination-track > .destination-card.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.destination-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.destination-card-link:hover,
+.destination-card-link:focus-visible {
+  color: inherit;
+  text-decoration: none;
+}
+
+.destination-card-image {
+  line-height: 0;
+}
+
+.destination-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.destination-card-body {
+  padding: 16px;
+}
+
+.destination-card-city {
+  margin: 0 0 4px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.destination-card-country {
+  margin: 0;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+}
+
+.destination-indicators {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.destination-indicators button {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: rgb(255 255 255 / 50%);
+  cursor: pointer;
+}
+
+.destination-indicators button.active {
+  background-color: #fff;
+}
+
+.destination-control {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 50%;
+  background-color: rgb(0 0 0 / 30%);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.destination-control-prev {
+  left: 16px;
+}
+
+.destination-control-next {
+  right: 16px;
+}
+
+.destination-arrow-icon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 2px solid currentcolor;
+  border-width: 2px 2px 0 0;
+}
+
+.destination-control-prev .destination-arrow-icon {
+  margin-left: 4px;
+  transform: rotate(-135deg);
+}
+
+.destination-control-next .destination-arrow-icon {
+  margin-right: 4px;
+  transform: rotate(45deg);
+}
+
+@media (width >= 900px) {
+  .destination-control {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Style variants: each reorders/hides the same image + city + country markup rather than
+   changing what gets rendered, so styling stays purely CSS-driven. */
+.destination-card.style-image-bottom .destination-card-link {
+  display: flex;
+  flex-direction: column;
+}
+
+.destination-card.style-image-bottom .destination-card-image {
+  order: 2;
+}
+
+.destination-card.style-image-bottom .destination-card-body {
+  order: 1;
+}
+
+.destination-card.style-title-only .destination-card-image,
+.destination-card.style-title-only .destination-card-country {
+  display: none;
+}
+
+.destination-card.style-text-only .destination-card-image {
+  display: none;
+}
+
+/* destination-carousel section style: a multi-card sliding carousel with the badge/title
+   overlaid on each image, instead of the default full-bleed single-fade slide */
+/* stylelint-disable-next-line no-descending-specificity */
+.section.destination-carousel > div {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 24px;
+}
+
+.section.destination-carousel .destination-wrapper {
+  padding: 0;
+}
+
+.section.destination-carousel .destination-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.section.destination-carousel .destination-track::-webkit-scrollbar {
+  display: none;
+}
+
+.section.destination-carousel .destination-track > .destination-card {
+  grid-area: unset;
+  position: relative;
+  flex: 0 0 100%;
+  aspect-ratio: 1 / 1;
+  opacity: 1;
+  pointer-events: auto;
+  scroll-snap-align: start;
+  border: none;
+  border-radius: 16px;
+}
+
+.section.destination-carousel .destination-card-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.section.destination-carousel .destination-card-image {
+  position: absolute;
+  inset: 0;
+}
+
+.section.destination-carousel .destination-card-image img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.section.destination-carousel .destination-card-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0%) 55%, rgb(0 0 0 / 55%) 100%);
+}
+
+.section.destination-carousel .destination-card-body {
+  position: absolute;
+  inset: 16px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.section.destination-carousel .destination-card-country {
+  order: -1;
+  align-self: flex-start;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background-color: rgb(255 255 255 / 20%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.section.destination-carousel .destination-card-city {
+  max-width: calc(100% - 56px);
+  margin: 0;
+  color: #fff;
+  font-family: var(--body-font-family);
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.section.destination-carousel .destination-card-link::before {
+  content: '';
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.section.destination-carousel .destination-card-link::after {
+  content: '';
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  z-index: 3;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #131313;
+  border-width: 2px 2px 0 0;
+  transform: rotate(45deg);
+}
+
+.section.destination-carousel .destination-indicators {
+  display: none;
+}
+
+.section.destination-carousel .destination-control {
+  background-color: #fff;
+  color: #131313;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+}
+
+.section.destination-carousel .destination-control-prev {
+  left: 0;
+}
+
+.section.destination-carousel .destination-control-next {
+  right: 0;
+}
+
+@media (width >= 600px) {
+  .section.destination-carousel .destination-track > .destination-card {
+    flex: 0 0 calc((100% - 24px) / 2);
+  }
+}
+
+@media (width >= 900px) {
+  .section.destination-carousel > div {
+    padding: 0 32px;
+  }
+
+  .section.destination-carousel .destination-track > .destination-card {
+    flex: 0 0 calc((100% - 48px) / 3);
+  }
+}

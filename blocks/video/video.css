@@ -1,0 +1,82 @@
+.video {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background-color: #2a1a66;
+}
+
+.video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 6;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  pointer-events: none;
+  text-align: center;
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-m);
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.video-overlay p {
+  margin: 0;
+}
+
+.video-mark {
+  display: block;
+  width: 14px;
+  height: 2px;
+  background-color: #fff;
+  transform: rotate(-55deg);
+}
+
+.video-controls {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.video-play-toggle,
+.video-mute-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  padding: 4px;
+  opacity: 0.85;
+  cursor: pointer;
+}
+
+.video-play-toggle:hover,
+.video-mute-toggle:hover {
+  opacity: 1;
+}
+
+.video-play-toggle .icon,
+.video-mute-toggle .icon {
+  width: 20px;
+  height: 20px;
+}
+
+@media (width >= 900px) {
+  .video-overlay {
+    font-size: var(--heading-font-size-l);
+  }
+}
