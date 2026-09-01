@@ -140,14 +140,34 @@ export default async function decorate(block) {
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
-      if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-      navSection.addEventListener('click', () => {
-        if (isDesktop.matches) {
+      if (navSection.querySelector('ul')) {
+        navSection.classList.add('nav-drop');
+      } else if (!navSection.querySelector('a')) {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = navSection.textContent;
+        navSection.replaceChildren(link);
+      }
+      navSection.addEventListener('click', (e) => {
+        if (isDesktop.matches && navSection.classList.contains('nav-drop')) {
+          e.preventDefault();
           const expanded = navSection.getAttribute('aria-expanded') === 'true';
           toggleAllNavSections(navSections);
           navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
         }
       });
+    });
+  }
+
+  // make tool icons act as links
+  const navTools = nav.querySelector('.nav-tools');
+  if (navTools) {
+    navTools.querySelectorAll('.icon').forEach((icon) => {
+      if (icon.closest('a')) return;
+      const link = document.createElement('a');
+      link.href = '#';
+      icon.replaceWith(link);
+      link.append(icon);
     });
   }
 

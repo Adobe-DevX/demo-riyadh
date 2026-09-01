@@ -5,9 +5,24 @@ export default function decorate(block) {
   bar.className = 'search-bar';
 
   [...block.children].forEach((field, i) => {
-    const [label, value] = field.children;
+    const [labelText, value] = field.children;
+    const fieldId = `search-field-${i}`;
+
+    const label = document.createElement('label');
     label.className = 'search-field-label';
-    value.className = 'search-field-value';
+    label.setAttribute('for', fieldId);
+    label.textContent = labelText.textContent.trim();
+    labelText.replaceWith(label);
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = fieldId;
+    input.className = 'search-field-value';
+    input.autocomplete = 'off';
+    input.value = value.textContent.trim();
+    input.size = Math.max(input.value.length, label.textContent.length, 3) + 1;
+    value.replaceWith(input);
+
     field.className = 'search-field';
     bar.append(field);
 
