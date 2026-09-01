@@ -2,7 +2,7 @@
 // sorted/rendered server-side; used by the destination block's carousel. Unlike the Teaser
 // model, this query takes no path/folder scoping — it's a flat, paginated list — so the
 // destination block itself needs no content-reference field, just how many items to show.
-const LIST_QUERY = 'destinations-all';
+const LIST_QUERY = 'riyadh/destinations-all';
 
 /**
  * fetches a page of Destination content fragments

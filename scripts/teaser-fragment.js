@@ -4,7 +4,7 @@ import getGraphqlHost from './graphql-host.js';
 // resolves a single Teaser fragment by its DAM path. The path itself comes from a Universal
 // Editor content-fragment picker rather than a hand-typed slug, so it's always valid at the
 // time it's authored.
-const BY_PATH_QUERY = 'teaser-by-path';
+const BY_PATH_QUERY = 'riyadh/teaser-by-path';
 
 // the CF model's ctaLink is a page reference (its _path is the JCR content path, e.g.
 // "/content/riyadh/index"), but this project's fstab mounts the whole "demo-riyadh" site at
