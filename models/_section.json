@@ -45,6 +45,10 @@
             {
               "name": "Winter Getaway",
               "value": "winter-getaway"
+            },
+            {
+              "name": "Destination Carousel",
+              "value": "destination-carousel"
             }
           ]
         }
