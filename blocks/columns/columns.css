@@ -31,3 +31,106 @@
     order: unset;
   }
 }
+
+/* cargo-section style: the first column's image becomes a full-height background with the
+   heading/description/CTA overlaid on top of it; the second column keeps its two images
+   stacked, sized to match the first column's height */
+.section.cargo-section .columns > div > div:first-child {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 16px;
+  min-height: 320px;
+  padding: 40px;
+  color: #fff;
+}
+
+.section.cargo-section .columns > div > div:first-child p:has(picture) {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  margin: 0;
+  line-height: 0;
+}
+
+.section.cargo-section .columns > div > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.section.cargo-section .columns > div > div:first-child::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgb(0 0 0 / 10%) 0%, rgb(0 0 0 / 65%) 100%);
+}
+
+.section.cargo-section .columns h1 {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: var(--heading-font-size-l);
+  font-weight: 300;
+  color: #fff;
+}
+
+.section.cargo-section .columns > div > div:first-child p:not(.button-wrapper, :has(picture)) {
+  max-width: 500px;
+  margin: 12px 0 0;
+  color: #fff;
+  font-size: var(--body-font-size-s);
+}
+
+.section.cargo-section .columns .button-wrapper {
+  margin: 24px 0 0;
+}
+
+.section.cargo-section .columns .button.primary {
+  border-color: #fff;
+  background-color: rgb(255 255 255 / 15%);
+  color: #fff;
+}
+
+.section.cargo-section .columns .button.primary:hover,
+.section.cargo-section .columns .button.primary:focus-visible {
+  border-color: #fff;
+  background-color: rgb(255 255 255 / 25%);
+}
+
+.section.cargo-section .columns > div > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.section.cargo-section .columns > div > div:last-child p {
+  flex: 1;
+  margin: 0;
+  line-height: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.section.cargo-section .columns > div > div:last-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (width >= 900px) {
+  .section.cargo-section .columns > div {
+    align-items: stretch;
+  }
+
+  .section.cargo-section .columns > div > div:first-child {
+    flex: 2;
+  }
+
+  .section.cargo-section .columns > div > div:last-child {
+    flex: 1;
+  }
+}
