@@ -44,8 +44,8 @@ export async function fetchTeaserByPath(aemHost, fragmentPath) {
 
 /**
  * renders a Teaser content fragment item using the .teaser-card markup
- * @param {object} item the content fragment item ({ heading, backgroundImage, ctaLabel,
- * ctaLink }), as returned by the "teaser-by-path" persisted query
+ * @param {object} item the content fragment item ({ heading, description, backgroundImage,
+ * ctaLabel, ctaLink }), as returned by the "teaser-by-path" persisted query
  * @param {string} aemHost the AEM host, used to resolve relative image paths
  * @param {string} [style] optional "style-<value>" modifier class for this card
  * @returns {HTMLLIElement} the rendered card
@@ -84,6 +84,12 @@ export function renderTeaserCard(item, aemHost, style) {
     titleEl.className = 'teaser-card-title';
     titleEl.textContent = item.heading;
     body.append(titleEl);
+  }
+  if (item.description?.plaintext) {
+    const descriptionEl = document.createElement('p');
+    descriptionEl.className = 'teaser-card-description';
+    descriptionEl.textContent = item.description.plaintext;
+    body.append(descriptionEl);
   }
   if (item.ctaLabel) {
     const ctaEl = document.createElement('p');
