@@ -152,6 +152,10 @@
           {
             "name": "Destination Carousel",
             "value": "destination-carousel"
+          },
+          {
+            "name": "Cargo Section",
+            "value": "cargo-section"
           }
         ]
       }
