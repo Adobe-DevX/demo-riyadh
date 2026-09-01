@@ -40,8 +40,9 @@ export function renderDestinationCard(item, aemHost, style) {
   li.className = 'destination-card';
   if (style && style !== 'default') li.classList.add(`style-${style}`);
 
-  const wrapper = document.createElement('div');
+  const wrapper = document.createElement('a');
   wrapper.className = 'destination-card-link';
+  wrapper.href = '#';
 
   // GraphQL's Content Fragment schema names these fields with a leading underscore.
   // _dynamicUrl (a pre-sized Dynamic Media rendition) is preferred over the raw DAM _path.

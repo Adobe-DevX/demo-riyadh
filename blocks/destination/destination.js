@@ -51,6 +51,17 @@ function buildCarousel(block, slides) {
     [...indicators.children].forEach((dot, i) => dot.classList.toggle('active', i === current));
   }
 
+  // for multi-card carousel styles (track laid out as a scrollable row instead of stacked
+  // fade slides), also slide the track by one card width; a no-op when the track has no
+  // overflow, so this is safe to call unconditionally regardless of style
+  function slideBy(dir) {
+    const card = track.children[0];
+    if (!card) return;
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    const amount = card.getBoundingClientRect().width + gap;
+    track.scrollBy({ left: dir * amount, behavior: 'smooth' });
+  }
+
   function stopAutoplay() {
     if (timer) clearInterval(timer);
   }
@@ -60,8 +71,8 @@ function buildCarousel(block, slides) {
     if (slides.length > 1) timer = setInterval(() => goToSlide(current + 1), 4000);
   }
 
-  prevButton.addEventListener('click', () => { goToSlide(current - 1); startAutoplay(); });
-  nextButton.addEventListener('click', () => { goToSlide(current + 1); startAutoplay(); });
+  prevButton.addEventListener('click', () => { goToSlide(current - 1); slideBy(-1); startAutoplay(); });
+  nextButton.addEventListener('click', () => { goToSlide(current + 1); slideBy(1); startAutoplay(); });
   [...indicators.children].forEach((dot, i) => {
     dot.addEventListener('click', () => { goToSlide(i); startAutoplay(); });
   });

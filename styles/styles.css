@@ -321,7 +321,8 @@ main .section.light,
 main .section.highlight,
 main .section.search,
 main .section.video,
-main .section.winter-getaway {
+main .section.winter-getaway,
+main .section.destination-carousel {
   background-color: var(--light-color);
   margin: 0;
   padding: 40px 0;
