@@ -11,6 +11,19 @@ import {
   loadCSS,
 } from './aem.js';
 
+const LOCALES = ['en', 'ar'];
+
+/**
+ * Determines the current page's locale from the first segment of the URL path — pages live
+ * under a locale-prefixed root (e.g. "/en/index", "/ar/index") once language copies exist.
+ * @returns {string|undefined} the locale code, or undefined when the path has no recognized
+ *   locale prefix (e.g. a root-level page that hasn't been migrated under a locale root)
+ */
+export function getLocale() {
+  const [, maybeLocale] = window.location.pathname.split('/');
+  return LOCALES.includes(maybeLocale) ? maybeLocale : undefined;
+}
+
 /**
  * Moves all the attributes from a given elmenet to another given element.
  * @param {Element} from the element to copy attributes from
@@ -127,7 +140,7 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  document.documentElement.lang = getLocale() || 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
