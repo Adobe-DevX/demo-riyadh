@@ -11,63 +11,72 @@
  */
 
 :root {
-  /* colors */
-  --background-color: white;
-  --light-color: #f8f8f8;
-  --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
+  /* Riyadh Air brand colors */
+  --background-color: #fff;
+  --light-color: #f4f4fa;
+  --dark-color: #5b5470;
+  --text-color: #0e031f;
+  --primary-color: #250854;
+  --header-gradient-a: #250854;
+  --header-gradient-b: #503974;
+  --header-gradient-c: #7d6d97;
+  --accent-color: #5249ab;
+  --accent-soft: #6866cc;
+  --link-color: #5249ab;
+  --link-hover-color: #250854;
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --body-font-family: inter, inter-fallback, sans-serif;
+  --heading-font-family: fraunces, fraunces-fallback, serif;
 
   /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
+  --body-font-size-m: 18px;
+  --body-font-size-s: 16px;
+  --body-font-size-xs: 14px;
 
   /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
+  --heading-font-size-xxl: 32px;
+  --heading-font-size-xl: 26px;
+  --heading-font-size-l: 22px;
+  --heading-font-size-m: 19px;
+  --heading-font-size-s: 17px;
+  --heading-font-size-xs: 15px;
+
+  /* shape */
+  --tile-radius: 28px;
 
   /* nav height */
   --nav-height: 88px;
 }
 
-/* fallback fonts */
-@font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
-  src: local('Arial');
-}
-
-@font-face {
-  font-family: roboto-fallback;
-  size-adjust: 99.529%;
-  src: local('Arial');
-}
-
 @media (width >= 900px) {
   :root {
     /* body sizes */
-    --body-font-size-m: 18px;
-    --body-font-size-s: 16px;
-    --body-font-size-xs: 14px;
+    --body-font-size-m: 17px;
+    --body-font-size-s: 15px;
+    --body-font-size-xs: 13px;
 
     /* heading sizes */
-    --heading-font-size-xxl: 45px;
-    --heading-font-size-xl: 36px;
-    --heading-font-size-l: 28px;
-    --heading-font-size-m: 22px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
+    --heading-font-size-xxl: 42px;
+    --heading-font-size-xl: 30px;
+    --heading-font-size-l: 24px;
+    --heading-font-size-m: 20px;
+    --heading-font-size-s: 18px;
+    --heading-font-size-xs: 15px;
   }
+}
+
+/* fallback fonts */
+@font-face {
+  font-family: inter-fallback;
+  size-adjust: 107%;
+  src: local('Arial');
+}
+
+@font-face {
+  font-family: fraunces-fallback;
+  size-adjust: 116%;
+  src: local('Georgia');
 }
 
 body {
@@ -108,7 +117,7 @@ h6 {
   margin-bottom: 0.25em;
   font-family: var(--heading-font-family);
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.3;
   scroll-margin: 40px;
 }
 
@@ -199,18 +208,18 @@ button.button:disabled {
 
 a.button.primary,
 button.button.primary {
-  border-color: var(--text-color);
-  background-color: var(--text-color);
-  color: var(--background-color);
+  border-color: transparent;
+  background-color: var(--primary-color);
+  color: #fff;
 }
 
 a.button.primary:hover,
 a.button.primary:focus-visible,
 button.button.primary:hover,
 button.button.primary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  border-color: transparent;
+  background-color: var(--header-gradient-b);
+  color: #fff;
 }
 
 a.button.primary[aria-disabled="true"],
@@ -337,7 +346,7 @@ main .section.winter-getaway h3 {
   grid-column: 1;
   grid-row: 1;
   margin: 0;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 main .section.winter-getaway p:not(.button-wrapper) {
@@ -354,16 +363,6 @@ main .section.winter-getaway .button-wrapper {
   margin: 0;
 }
 
-main .section.winter-getaway .button.primary {
-  border-color: #241536;
-  background-color: #241536;
-}
-
-main .section.winter-getaway .button.primary:hover,
-main .section.winter-getaway .button.primary:focus-visible {
-  border-color: #3d2c54;
-  background-color: #3d2c54;
-}
 
 @media (width < 900px) {
   main .section.winter-getaway > div {
@@ -422,7 +421,7 @@ main .section.winter-getaway .hero p strong a {
   align-items: center;
   border-radius: 999px;
   padding: 14px 28px;
-  background-color: #241536;
+  background-color: var(--primary-color);
   color: #fff;
   font-weight: 500;
   text-decoration: none;
@@ -431,7 +430,7 @@ main .section.winter-getaway .hero p strong a {
 
 main .section.winter-getaway .hero p strong a:hover,
 main .section.winter-getaway .hero p strong a:focus-visible {
-  background-color: #3d2c54;
+  background-color: var(--header-gradient-b);
 }
 
 @media (width >= 900px) {

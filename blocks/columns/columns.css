@@ -41,7 +41,7 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: var(--tile-radius);
   min-height: 320px;
   padding: 40px;
   color: #fff;
@@ -71,9 +71,9 @@
 
 .section.cargo-section .columns h1 {
   margin: 0;
-  font-family: var(--body-font-family);
+  font-family: var(--heading-font-family);
   font-size: var(--heading-font-size-l);
-  font-weight: 300;
+  font-weight: 600;
   color: #fff;
 }
 
@@ -111,7 +111,7 @@
   flex: 1;
   margin: 0;
   line-height: 0;
-  border-radius: 16px;
+  border-radius: var(--tile-radius);
   overflow: hidden;
 }
 

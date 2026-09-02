@@ -188,4 +188,9 @@ export default async function decorate(block) {
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
+
+  // swap the transparent hero scrim for a solid background once the page scrolls past it
+  const updateScrolled = () => navWrapper.classList.toggle('scrolled', window.scrollY > 24);
+  updateScrolled();
+  window.addEventListener('scroll', updateScrolled, { passive: true });
 }

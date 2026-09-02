@@ -21,7 +21,7 @@ main > .section:not(.destination-carousel):has(.destination) > div {
 
 .destination-card {
   border: 1px solid #dadada;
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
   background-color: var(--background-color);
 }
@@ -104,7 +104,7 @@ main > .section:not(.destination-carousel):has(.destination) > div {
 }
 
 .destination-indicators button.active {
-  background-color: #fff;
+  background-color: var(--accent-soft);
 }
 
 .destination-control {
@@ -215,7 +215,7 @@ main > .section:not(.destination-carousel):has(.destination) > div {
   pointer-events: auto;
   scroll-snap-align: start;
   border: none;
-  border-radius: 16px;
+  border-radius: var(--tile-radius);
 }
 
 .section.destination-carousel .destination-card-link {
@@ -296,7 +296,7 @@ main > .section:not(.destination-carousel):has(.destination) > div {
   z-index: 3;
   width: 8px;
   height: 8px;
-  border: 2px solid #131313;
+  border: 2px solid var(--primary-color);
   border-width: 2px 2px 0 0;
   transform: rotate(45deg);
 }
@@ -307,8 +307,8 @@ main > .section:not(.destination-carousel):has(.destination) > div {
 
 .section.destination-carousel .destination-control {
   background-color: #fff;
-  color: #131313;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+  color: var(--primary-color);
+  box-shadow: 0 4px 16px rgb(35 7 81 / 18%);
 }
 
 .section.destination-carousel .destination-control-prev {

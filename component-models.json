@@ -290,7 +290,7 @@
       {
         "component": "aem-content-fragment",
         "valueType": "string",
-        "name": "fragmentPath",
+        "name": "fileReference",
         "label": "Teaser (Content Fragment)",
         "validation": {
           "rootPath": "/content/dam/riyadh/content-fragments/teasers"

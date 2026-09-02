@@ -6,7 +6,7 @@
   flex-wrap: wrap;
   background-color: var(--background-color);
   border-radius: 999px;
-  box-shadow: 0 10px 30px rgb(0 0 0 / 8%);
+  box-shadow: 0 20px 45px rgb(35 7 81 / 12%);
   padding: 24px 24px 24px 40px;
 }
 
@@ -20,9 +20,10 @@
 
 .search-field-label {
   display: block;
-  font-size: 15px;
-  color: #948da8;
+  font-size: 13px;
+  color: var(--dark-color);
   font-weight: 500;
+  letter-spacing: 0.02em;
   line-height: 1;
 }
 
@@ -31,9 +32,9 @@
   background: transparent;
   padding: 0;
   font-family: inherit;
-  font-size: 22px;
-  color: var(--text-color);
-  font-weight: 700;
+  font-size: 20px;
+  color: var(--primary-color);
+  font-weight: 600;
   line-height: 1;
   white-space: nowrap;
 }
@@ -64,15 +65,20 @@
   height: 56px;
   border: none;
   border-radius: 50%;
-  background-color: #e6e4ea;
+  background-color: var(--primary-color);
   cursor: pointer;
   margin-left: auto;
+  transition: opacity 0.2s ease;
+}
+
+.search-submit:hover,
+.search-submit:focus-visible {
+  opacity: 0.88;
 }
 
 .search-submit .icon {
-  width: 22px;
-  height: 22px;
-  filter: none;
+  width: 20px;
+  height: 20px;
 }
 
 @media (width < 900px) {
