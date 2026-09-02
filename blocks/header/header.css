@@ -1,10 +1,18 @@
 /* header and nav layout */
 header .nav-wrapper {
-  background: linear-gradient(90deg, #241536 25%, #3d2c54 40%, #8478a0 100%);
+  background: linear-gradient(180deg, rgb(0 0 0 / 35%) 0%, rgb(0 0 0 / 0%) 100%);
   color: #fff;
   width: 100%;
   z-index: 2;
   position: fixed;
+  transition: background 0.7s ease;
+}
+
+/* once scrolled (or with the mobile menu open), swap in the solid brand gradient used across
+   the real site's header/footer surfaces */
+header .nav-wrapper.scrolled,
+header .nav-wrapper:has(nav[aria-expanded='true']) {
+  background: linear-gradient(90deg, var(--header-gradient-a) 0%, var(--header-gradient-b) 50%, var(--header-gradient-c) 100%);
 }
 
 header nav {

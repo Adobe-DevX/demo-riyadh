@@ -8,7 +8,7 @@
 
 .teaser-card {
   border: 1px solid #dadada;
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
   background-color: var(--background-color);
 }
@@ -119,7 +119,7 @@
 .teaser-card.style-image-left .teaser-card-image,
 .teaser-card.style-image-right .teaser-card-image {
   flex: 0 0 42%;
-  border-radius: 16px;
+  border-radius: var(--tile-radius);
   overflow: hidden;
 }
 
@@ -138,9 +138,10 @@
 .teaser-card.style-image-left .teaser-card-title,
 .teaser-card.style-image-right .teaser-card-title {
   margin: 0;
-  font-family: var(--body-font-family);
+  font-family: var(--heading-font-family);
   font-size: var(--heading-font-size-l);
-  font-weight: 300;
+  font-weight: 600;
+  color: var(--primary-color);
   text-transform: none;
 }
 
@@ -157,7 +158,7 @@
   margin: 24px 0 0;
   padding: 14px 28px;
   border-radius: 999px;
-  background-color: #241536;
+  background-color: var(--primary-color);
   color: #fff;
   font-size: var(--body-font-size-s);
   font-weight: 500;
