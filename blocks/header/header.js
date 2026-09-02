@@ -1,4 +1,5 @@
 import { getMetadata } from '../../scripts/aem.js';
+import { getLocale } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
@@ -115,7 +116,8 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
 export default async function decorate(block) {
   // load nav as fragment
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+  const locale = getLocale();
+  const navPath = navMeta ? new URL(navMeta, window.location).pathname : `${locale ? `/${locale}` : ''}/nav`;
   const fragment = await loadFragment(navPath);
 
   // decorate nav DOM
