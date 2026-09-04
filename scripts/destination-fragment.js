@@ -2,6 +2,8 @@
 // sorted/rendered server-side; used by the destination block's carousel. Unlike the Teaser
 // model, this query takes no path/folder scoping — it's a flat, paginated list — so the
 // destination block itself needs no content-reference field, just how many items to show.
+import { instrumentFragment, instrumentField } from './cf-instrumentation.js';
+
 const LIST_QUERY = 'riyadh/destinations-all';
 
 /**
@@ -39,6 +41,9 @@ export function renderDestinationCard(item, aemHost, style) {
   const li = document.createElement('li');
   li.className = 'destination-card';
   if (style && style !== 'default') li.classList.add(`style-${style}`);
+  // GraphQL's Content Fragment schema names the fragment's own path with a leading underscore
+  // eslint-disable-next-line no-underscore-dangle
+  instrumentFragment(li, item._path, item.destinationCity || 'Destination');
 
   const wrapper = document.createElement('a');
   wrapper.className = 'destination-card-link';
@@ -56,6 +61,7 @@ export function renderDestinationCard(item, aemHost, style) {
     img.src = imageUrl;
     img.alt = item.destinationCity || '';
     img.loading = 'lazy';
+    instrumentField(img, 'backgroundImage', 'media', 'Image');
     imageWrapper.append(img);
     wrapper.append(imageWrapper);
   }
@@ -66,12 +72,14 @@ export function renderDestinationCard(item, aemHost, style) {
     const cityEl = document.createElement('p');
     cityEl.className = 'destination-card-city';
     cityEl.textContent = item.destinationCity;
+    instrumentField(cityEl, 'destinationCity', 'text', 'City');
     body.append(cityEl);
   }
   if (item.destinationCountry) {
     const countryEl = document.createElement('p');
     countryEl.className = 'destination-card-country';
     countryEl.textContent = item.destinationCountry;
+    instrumentField(countryEl, 'destinationCountry', 'text', 'Country');
     body.append(countryEl);
   }
   wrapper.append(body);
