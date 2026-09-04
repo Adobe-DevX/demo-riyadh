@@ -2,6 +2,7 @@
 // sorted/rendered server-side; used by the destination block's carousel. Unlike the Teaser
 // model, this query takes no path/folder scoping — it's a flat, paginated list — so the
 // destination block itself needs no content-reference field, just how many items to show.
+import { isAuthorEnvironment } from './graphql-host.js';
 import { instrumentFragment, instrumentField } from './cf-instrumentation.js';
 
 const LIST_QUERY = 'riyadh/destinations-all';
@@ -16,7 +17,10 @@ const LIST_QUERY = 'riyadh/destinations-all';
 export async function fetchDestinations(aemHost, limit = 12, offset = 0) {
   const url = `${aemHost}/graphql/execute.json/${LIST_QUERY};offset=${offset};limit=${limit}`;
   try {
-    const res = await fetch(url);
+    // when authoring, bypass the browser HTTP cache (the persisted query is served with
+    // max-age=60) so a just-edited Content Fragment shows up on Universal Editor's post-edit
+    // reload instead of the stale, still-cached response; published pages keep the caching
+    const res = await fetch(url, isAuthorEnvironment() ? { cache: 'no-store' } : undefined);
     if (!res.ok) throw new Error(`GraphQL request failed: ${res.status}`);
     const json = await res.json();
     if (json.errors) throw new Error(`GraphQL errors: ${JSON.stringify(json.errors)}`);

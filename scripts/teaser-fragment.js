@@ -1,5 +1,5 @@
 import { moveInstrumentation } from './scripts.js';
-import getGraphqlHost from './graphql-host.js';
+import getGraphqlHost, { isAuthorEnvironment } from './graphql-host.js';
 import { instrumentFragment, instrumentField } from './cf-instrumentation.js';
 
 // resolves a single Teaser fragment by its DAM path. The path itself comes from a Universal
@@ -31,7 +31,10 @@ export async function fetchTeaserByPath(aemHost, fragmentPath) {
   // real slashes is what this query expects
   const url = `${aemHost}/graphql/execute.json/${BY_PATH_QUERY};teaserPath=${fragmentPath}`;
   try {
-    const res = await fetch(url);
+    // when authoring, bypass the browser HTTP cache (the persisted query is served with
+    // max-age=60) so a just-edited Content Fragment shows up on Universal Editor's post-edit
+    // reload instead of the stale, still-cached response; published pages keep the caching
+    const res = await fetch(url, isAuthorEnvironment() ? { cache: 'no-store' } : undefined);
     if (!res.ok) throw new Error(`GraphQL request failed: ${res.status}`);
     const json = await res.json();
     if (json.errors) throw new Error(`GraphQL errors: ${JSON.stringify(json.errors)}`);
