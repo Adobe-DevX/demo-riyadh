@@ -48,5 +48,12 @@
       ]
     }
   ],
-  "filters": []
+  "filters": [
+    {
+      "id": "destination",
+      "components": [
+        "content-fragment"
+      ]
+    }
+  ]
 }

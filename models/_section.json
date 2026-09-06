@@ -74,7 +74,8 @@
         "search",
         "video",
         "teaser",
-        "destination"
+        "destination",
+        "content-fragment"
       ]
     }
   ]
