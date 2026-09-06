@@ -1,0 +1,9 @@
+{
+  "mappings": [
+    "/content/riyadh/:/",
+    "/content/riyadh/language-masters/:/"
+  ],
+  "includes": [
+    "/content/riyadh/"
+  ]
+}

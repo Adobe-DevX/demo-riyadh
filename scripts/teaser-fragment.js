@@ -1,5 +1,6 @@
 import { moveInstrumentation } from './scripts.js';
-import getGraphqlHost from './graphql-host.js';
+import getGraphqlHost, { isAuthorEnvironment } from './graphql-host.js';
+import { instrumentFragment, instrumentField } from './cf-instrumentation.js';
 
 // resolves a single Teaser fragment by its DAM path. The path itself comes from a Universal
 // Editor content-fragment picker rather than a hand-typed slug, so it's always valid at the
@@ -30,7 +31,10 @@ export async function fetchTeaserByPath(aemHost, fragmentPath) {
   // real slashes is what this query expects
   const url = `${aemHost}/graphql/execute.json/${BY_PATH_QUERY};teaserPath=${fragmentPath}`;
   try {
-    const res = await fetch(url);
+    // when authoring, bypass the browser HTTP cache (the persisted query is served with
+    // max-age=60) so a just-edited Content Fragment shows up on Universal Editor's post-edit
+    // reload instead of the stale, still-cached response; published pages keep the caching
+    const res = await fetch(url, isAuthorEnvironment() ? { cache: 'no-store' } : undefined);
     if (!res.ok) throw new Error(`GraphQL request failed: ${res.status}`);
     const json = await res.json();
     if (json.errors) throw new Error(`GraphQL errors: ${JSON.stringify(json.errors)}`);
@@ -73,6 +77,7 @@ export function renderTeaserCard(item, aemHost, style) {
     img.src = imageUrl;
     img.alt = item.heading || '';
     img.loading = 'lazy';
+    instrumentField(img, 'backgroundImage', 'media', 'Image');
     imageWrapper.append(img);
     link.append(imageWrapper);
   }
@@ -83,18 +88,21 @@ export function renderTeaserCard(item, aemHost, style) {
     const titleEl = document.createElement('p');
     titleEl.className = 'teaser-card-title';
     titleEl.textContent = item.heading;
+    instrumentField(titleEl, 'heading', 'text', 'Heading');
     body.append(titleEl);
   }
   if (item.description?.plaintext) {
     const descriptionEl = document.createElement('p');
     descriptionEl.className = 'teaser-card-description';
     descriptionEl.textContent = item.description.plaintext;
+    instrumentField(descriptionEl, 'description', 'richtext', 'Description');
     body.append(descriptionEl);
   }
   if (item.ctaLabel) {
     const ctaEl = document.createElement('p');
     ctaEl.className = 'teaser-card-cta';
     ctaEl.textContent = item.ctaLabel;
+    instrumentField(ctaEl, 'ctaLabel', 'text', 'CTA Label');
     body.append(ctaEl);
   }
   link.append(body);
@@ -117,6 +125,10 @@ async function loadCfCard(placeholder, fragmentPath, style) {
   const card = renderTeaserCard(item, aemHost, style);
   placeholder.className = card.className;
   placeholder.replaceChildren(...card.childNodes);
+  // the container's Content Fragment instrumentation goes on the placeholder — the element that
+  // stays in the DOM — because only the rendered card's className and children are copied above,
+  // not its attributes; the field instrumentation rides along on the copied child nodes
+  instrumentFragment(placeholder, fragmentPath, item.heading || 'Teaser');
 }
 
 /**

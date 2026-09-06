@@ -21,6 +21,16 @@
       "id": "destination",
       "fields": [
         {
+          "component": "aem-content-fragment",
+          "valueType": "string",
+          "name": "fragments",
+          "label": "Destinations (Content Fragments)",
+          "multi": true,
+          "validation": {
+            "rootPath": "/content/dam/riyadh/content-fragments/destinations"
+          }
+        },
+        {
           "component": "select",
           "valueType": "string",
           "name": "style",

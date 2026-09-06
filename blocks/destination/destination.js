@@ -1,9 +1,4 @@
-import getGraphqlHost from '../../scripts/graphql-host.js';
-import { fetchDestinations, renderDestinationCard } from '../../scripts/destination-fragment.js';
-
-// the "destinations-all" persisted query is a flat, paginated list with no author-facing
-// scoping field, so the carousel size is a fixed constant rather than an authored value
-const CAROUSEL_SIZE = 12;
+import { buildDestinationCard } from '../../scripts/destination-fragment.js';
 
 /**
  * builds the carousel chrome (track, indicators, prev/next controls) around a set of
@@ -86,28 +81,27 @@ function buildCarousel(block, slides) {
   }
 }
 
-// fetches the Destination content fragments and renders them as carousel slides in the
-// background — not awaited by decorate() so this block's network round-trip never blocks the
-// rest of the page's sections from loading (see loadSections/loadSection in scripts/aem.js,
-// which await each section/block in sequence)
-async function loadCarousel(block, style) {
-  const aemHost = getGraphqlHost();
-  const items = await fetchDestinations(aemHost, CAROUSEL_SIZE);
-  if (!items.length) return;
-  const slides = items.map((item) => renderDestinationCard(item, aemHost, style));
-  buildCarousel(block, slides);
-}
-
 /**
- * loads and decorates the destination block: a carousel built from every Destination content
- * fragment returned by a fixed-size persisted query (see loadCarousel). The fetch runs in the
- * background so this block never blocks the rest of the page.
+ * loads and decorates the destination block: a carousel built from the author-selected
+ * Destination content fragments — a single multi-value content-fragment field ("fragments"),
+ * rendered by Universal Editor as a list of reference links, one per selection. Each card is
+ * built via buildDestinationCard, which fetches its own fragment's content in the background —
+ * not awaited here, so this block never blocks the rest of the page's sections from loading
+ * (see loadSections/loadSection in scripts/aem.js, which await each section/block in sequence).
  * @param {Element} block The destination block element
  */
 export default function decorate(block) {
-  const [styleDiv] = block.children;
+  const [fragmentsDiv, styleDiv] = block.children;
   const style = styleDiv?.textContent.trim();
-  block.replaceChildren();
 
-  loadCarousel(block, style);
+  const slides = [...(fragmentsDiv?.querySelectorAll('a[href]') ?? [])]
+    .map((a) => {
+      // the authored link's href has ".html" appended for browser navigation purposes; the
+      // underlying DAM path (what the GraphQL persisted query expects) never has an extension
+      const path = a.getAttribute('href').replace(/\.html$/, '');
+      return buildDestinationCard(path, style, a.closest('li') || a);
+    });
+
+  block.replaceChildren();
+  if (slides.length) buildCarousel(block, slides);
 }
