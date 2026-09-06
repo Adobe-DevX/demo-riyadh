@@ -78,9 +78,15 @@
 }
 
 /* Destination Carousel section style: place several "destination" blocks inside one section
-   and apply this style to lay them out as a horizontally-scrolling carousel — pure CSS
-   (flex + scroll-snap) across the sibling block wrappers, no JS carousel logic needed. */
+   and apply this style to lay them out as a horizontally-scrolling carousel. The section's
+   block wrappers are moved into a ".destination-carousel-track" (see decorateDestinationCarousel
+   in scripts/scripts.js), which does the actual flex + scroll-snap scrolling; the section
+   itself just positions the floating prev/next controls on top of it. */
 .section.destination-carousel {
+  position: relative;
+}
+
+.destination-carousel-track {
   display: flex;
   gap: 24px;
   max-width: 1200px;
@@ -91,13 +97,57 @@
   scrollbar-width: none;
 }
 
-.section.destination-carousel::-webkit-scrollbar {
+.destination-carousel-track::-webkit-scrollbar {
   display: none;
 }
 
-.section.destination-carousel > div {
+.destination-carousel-track > div {
   flex: 0 0 100%;
   scroll-snap-align: start;
+}
+
+.destination-carousel-control {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 50%;
+  background-color: #fff;
+  color: var(--primary-color);
+  box-shadow: 0 4px 16px rgb(35 7 81 / 18%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.destination-carousel-control-prev {
+  left: 0;
+}
+
+.destination-carousel-control-next {
+  right: 0;
+}
+
+.destination-carousel-arrow-icon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 2px solid currentcolor;
+  border-width: 2px 2px 0 0;
+}
+
+.destination-carousel-control-prev .destination-carousel-arrow-icon {
+  margin-left: 4px;
+  transform: rotate(-135deg);
+}
+
+.destination-carousel-control-next .destination-carousel-arrow-icon {
+  margin-right: 4px;
+  transform: rotate(45deg);
 }
 
 .section.destination-carousel .destination-card {
@@ -191,17 +241,17 @@
 }
 
 @media (width >= 600px) {
-  .section.destination-carousel > div {
+  .destination-carousel-track > div {
     flex: 0 0 calc((100% - 24px) / 2);
   }
 }
 
 @media (width >= 900px) {
-  .section.destination-carousel {
+  .destination-carousel-track {
     padding: 0 32px;
   }
 
-  .section.destination-carousel > div {
+  .destination-carousel-track > div {
     flex: 0 0 calc((100% - 48px) / 3);
   }
 }
