@@ -80,7 +80,7 @@
 /* Destination Carousel section style: place several "destination" blocks inside one section
    and apply this style to lay them out as a horizontally-scrolling carousel — pure CSS
    (flex + scroll-snap) across the sibling block wrappers, no JS carousel logic needed. */
-.section.destination-carousel > div {
+.section.destination-carousel {
   display: flex;
   gap: 24px;
   max-width: 1200px;
@@ -91,11 +91,11 @@
   scrollbar-width: none;
 }
 
-.section.destination-carousel > div::-webkit-scrollbar {
+.section.destination-carousel::-webkit-scrollbar {
   display: none;
 }
 
-.section.destination-carousel .destination-wrapper {
+.section.destination-carousel > div {
   flex: 0 0 100%;
   scroll-snap-align: start;
 }
@@ -191,17 +191,17 @@
 }
 
 @media (width >= 600px) {
-  .section.destination-carousel .destination-wrapper {
+  .section.destination-carousel > div {
     flex: 0 0 calc((100% - 24px) / 2);
   }
 }
 
 @media (width >= 900px) {
-  .section.destination-carousel > div {
+  .section.destination-carousel {
     padding: 0 32px;
   }
 
-  .section.destination-carousel .destination-wrapper {
+  .section.destination-carousel > div {
     flex: 0 0 calc((100% - 48px) / 3);
   }
 }
