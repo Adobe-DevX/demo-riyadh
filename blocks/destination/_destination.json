@@ -21,14 +21,21 @@
       "id": "destination",
       "fields": [
         {
-          "component": "aem-content-fragment",
-          "valueType": "string",
-          "name": "fileReference",
+          "component": "container",
+          "name": "destinations",
           "label": "Destinations (Content Fragments)",
           "multi": true,
-          "validation": {
-            "rootPath": "/content/dam/riyadh/content-fragments/destinations"
-          }
+          "fields": [
+            {
+              "component": "aem-content-fragment",
+              "valueType": "string",
+              "name": "fileReference",
+              "label": "Destination (Content Fragment)",
+              "validation": {
+                "rootPath": "/content/dam/riyadh/content-fragments/destinations"
+              }
+            }
+          ]
         },
         {
           "component": "select",

@@ -81,26 +81,37 @@ function buildCarousel(block, slides) {
   }
 }
 
+// extracts a single destination's DAM path from one repetition of the "destinations"
+// container multi-field. The reference sub-field may export as a link (href, with a trailing
+// ".html" added for browser navigation — stripped here since the GraphQL query expects the raw
+// DAM path) or as plain text, depending on how Universal Editor renders a single-field
+// repetition, so both shapes are handled defensively.
+function extractPath(item) {
+  const href = item.querySelector('a[href]')?.getAttribute('href');
+  if (href) return href.replace(/\.html$/, '');
+  return item.textContent?.trim() || null;
+}
+
 /**
  * loads and decorates the destination block: a carousel built from the author-selected
- * Destination content fragments — a single multi-value content-fragment field ("fragments"),
- * rendered by Universal Editor as a list of reference links, one per selection. Each card is
- * built via buildDestinationCard, which fetches its own fragment's content in the background —
- * not awaited here, so this block never blocks the rest of the page's sections from loading
- * (see loadSections/loadSection in scripts/aem.js, which await each section/block in sequence).
+ * Destination content fragments — a "destinations" container multi-field, one repetition per
+ * selection (each added via Universal Editor's "+" control and holding its own content-fragment
+ * reference). Each card is built via buildDestinationCard, which fetches its own fragment's
+ * content in the background — not awaited here, so this block never blocks the rest of the
+ * page's sections from loading (see loadSections/loadSection in scripts/aem.js, which await
+ * each section/block in sequence).
  * @param {Element} block The destination block element
  */
 export default function decorate(block) {
-  const [fragmentsDiv, styleDiv] = block.children;
+  const [destinationsDiv, styleDiv] = block.children;
   const style = styleDiv?.textContent.trim();
 
-  const slides = [...(fragmentsDiv?.querySelectorAll('a[href]') ?? [])]
-    .map((a) => {
-      // the authored link's href has ".html" appended for browser navigation purposes; the
-      // underlying DAM path (what the GraphQL persisted query expects) never has an extension
-      const path = a.getAttribute('href').replace(/\.html$/, '');
-      return buildDestinationCard(path, style, a.closest('li') || a);
-    });
+  const slides = [...(destinationsDiv?.querySelectorAll('li') ?? [])]
+    .map((item) => {
+      const path = extractPath(item);
+      return path ? buildDestinationCard(path, style, item) : null;
+    })
+    .filter((slide) => slide);
 
   block.replaceChildren();
   if (slides.length) buildCarousel(block, slides);
