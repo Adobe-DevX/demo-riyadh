@@ -1,0 +1,207 @@
+.destination > ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.destination-card {
+  border: 1px solid #dadada;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: var(--background-color);
+}
+
+.destination-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.destination-card-link:hover,
+.destination-card-link:focus-visible {
+  color: inherit;
+  text-decoration: none;
+}
+
+.destination-card-image {
+  line-height: 0;
+}
+
+.destination-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.destination-card-body {
+  padding: 16px;
+}
+
+.destination-card-city {
+  margin: 0 0 4px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.destination-card-country {
+  margin: 0;
+  color: var(--dark-color);
+  font-size: var(--body-font-size-xs);
+}
+
+/* Style variants: each reorders/hides the same image + city + country markup rather than
+   changing what gets rendered, so styling stays purely CSS-driven. */
+.destination-card.style-image-bottom .destination-card-link {
+  display: flex;
+  flex-direction: column;
+}
+
+.destination-card.style-image-bottom .destination-card-image {
+  order: 2;
+}
+
+.destination-card.style-image-bottom .destination-card-body {
+  order: 1;
+}
+
+.destination-card.style-title-only .destination-card-image,
+.destination-card.style-title-only .destination-card-country {
+  display: none;
+}
+
+.destination-card.style-text-only .destination-card-image {
+  display: none;
+}
+
+/* Destination Carousel section style: place several "destination" blocks inside one section
+   and apply this style to lay them out as a horizontally-scrolling carousel — pure CSS
+   (flex + scroll-snap) across the sibling block wrappers, no JS carousel logic needed. */
+.section.destination-carousel > div {
+  display: flex;
+  gap: 24px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.section.destination-carousel > div::-webkit-scrollbar {
+  display: none;
+}
+
+.section.destination-carousel .destination-wrapper {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+.section.destination-carousel .destination-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: none;
+  border-radius: var(--tile-radius);
+}
+
+.section.destination-carousel .destination-card-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.section.destination-carousel .destination-card-image {
+  position: absolute;
+  inset: 0;
+}
+
+.section.destination-carousel .destination-card-image img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.section.destination-carousel .destination-card-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0%) 55%, rgb(0 0 0 / 55%) 100%);
+}
+
+.section.destination-carousel .destination-card-body {
+  position: absolute;
+  inset: 16px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.section.destination-carousel .destination-card-country {
+  order: -1;
+  align-self: flex-start;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background-color: rgb(255 255 255 / 20%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.section.destination-carousel .destination-card-city {
+  max-width: calc(100% - 56px);
+  margin: 0;
+  color: #fff;
+  font-family: var(--body-font-family);
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.section.destination-carousel .destination-card-link::before {
+  content: '';
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.section.destination-carousel .destination-card-link::after {
+  content: '';
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  z-index: 3;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--primary-color);
+  border-width: 2px 2px 0 0;
+  transform: rotate(45deg);
+}
+
+@media (width >= 600px) {
+  .section.destination-carousel .destination-wrapper {
+    flex: 0 0 calc((100% - 24px) / 2);
+  }
+}
+
+@media (width >= 900px) {
+  .section.destination-carousel > div {
+    padding: 0 32px;
+  }
+
+  .section.destination-carousel .destination-wrapper {
+    flex: 0 0 calc((100% - 48px) / 3);
+  }
+}

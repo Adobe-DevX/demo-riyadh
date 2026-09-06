@@ -151,7 +151,7 @@
           },
           {
             "name": "Destination Carousel",
-            "value": "destinations-carousel"
+            "value": "destination-carousel"
           },
           {
             "name": "Cargo Section",
@@ -210,6 +210,31 @@
         "validation": {
           "rootPath": "/content/dam/riyadh/content-fragments/destinations"
         }
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "style",
+        "label": "Style",
+        "value": "default",
+        "options": [
+          {
+            "name": "Default (Image Top)",
+            "value": "default"
+          },
+          {
+            "name": "Image Bottom",
+            "value": "image-bottom"
+          },
+          {
+            "name": "City Only",
+            "value": "title-only"
+          },
+          {
+            "name": "Text Only",
+            "value": "text-only"
+          }
+        ]
       }
     ]
   },
