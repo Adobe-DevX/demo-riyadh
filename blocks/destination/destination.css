@@ -79,19 +79,21 @@
 
 /* Destination Carousel section style: place several "destination" blocks inside one section
    and apply this style to lay them out as a horizontally-scrolling carousel. The section's
-   block wrappers are moved into a ".destination-carousel-track" (see decorateDestinationCarousel
-   in scripts/scripts.js), which does the actual flex + scroll-snap scrolling; the section
-   itself just positions the floating prev/next controls on top of it. */
-.section.destination-carousel {
+   block wrappers are moved into a ".destination-carousel-track" inside a centered
+   ".destination-carousel-inner" (see decorateDestinationCarousel in scripts/scripts.js); the
+   track does the actual flex + scroll-snap scrolling, while the inner wrapper — not the
+   full-width section — is what the floating prev/next controls are positioned against, so they
+   sit at the edges of the (narrower, centered) card row instead of the far edges of the page. */
+.destination-carousel-inner {
   position: relative;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 24px;
 }
 
 .destination-carousel-track {
   display: flex;
   gap: 24px;
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 24px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -247,7 +249,7 @@
 }
 
 @media (width >= 900px) {
-  .destination-carousel-track {
+  .destination-carousel-inner {
     padding: 0 32px;
   }
 

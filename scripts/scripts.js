@@ -128,14 +128,21 @@ export function decorateButtons(main) {
  * lays those wrappers out as a horizontally-scrolling, snap-scrolling row (see destination.css),
  * this just adds the two floating buttons on top, matching the standalone "destination" block's
  * per-card link icon rather than a full JS-driven carousel (no slide index/autoplay needed,
- * since native scroll-snap already handles position).
+ * since native scroll-snap already handles position). The track and its controls share an
+ * "inner" wrapper — sized/centered independently of the section itself, which spans the full
+ * page width — so the controls sit at the edges of the (narrower, centered) card row rather
+ * than the far edges of the page.
  * @param {Element} section a ".section.destination-carousel" element
  */
 function decorateDestinationCarousel(section) {
+  const inner = document.createElement('div');
+  inner.className = 'destination-carousel-inner';
+
   const track = document.createElement('div');
   track.className = 'destination-carousel-track';
   track.append(...section.children);
-  section.append(track);
+  inner.append(track);
+  section.append(inner);
 
   function scrollByCard(dir) {
     const card = track.children[0];
@@ -159,7 +166,7 @@ function decorateDestinationCarousel(section) {
   nextButton.innerHTML = '<span class="destination-carousel-arrow-icon"></span>';
   nextButton.addEventListener('click', () => scrollByCard(1));
 
-  section.append(prevButton, nextButton);
+  inner.append(prevButton, nextButton);
 }
 
 /**
