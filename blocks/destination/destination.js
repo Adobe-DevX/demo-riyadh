@@ -95,7 +95,12 @@ export default function decorate(block) {
   const style = styleDiv?.textContent.trim();
 
   const slides = [...(fragmentsDiv?.querySelectorAll('a[href]') ?? [])]
-    .map((a) => buildDestinationCard(a.getAttribute('href'), style, a.closest('li') || a));
+    .map((a) => {
+      // the authored link's href has ".html" appended for browser navigation purposes; the
+      // underlying DAM path (what the GraphQL persisted query expects) never has an extension
+      const path = a.getAttribute('href').replace(/\.html$/, '');
+      return buildDestinationCard(path, style, a.closest('li') || a);
+    });
 
   block.replaceChildren();
   if (slides.length) buildCarousel(block, slides);
