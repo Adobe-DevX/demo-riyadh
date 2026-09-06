@@ -48,7 +48,7 @@
             },
             {
               "name": "Destination Carousel",
-              "value": "destination-carousel"
+              "value": "destinations-carousel"
             },
             {
               "name": "Cargo Section",
@@ -74,7 +74,8 @@
         "search",
         "video",
         "teaser",
-        "destination"
+        "destination",
+        "destinations"
       ]
     }
   ]

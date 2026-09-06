@@ -151,7 +151,7 @@
           },
           {
             "name": "Destination Carousel",
-            "value": "destination-carousel"
+            "value": "destinations-carousel"
           },
           {
             "name": "Cargo Section",
@@ -203,22 +203,19 @@
     "id": "destination",
     "fields": [
       {
-        "component": "container",
-        "name": "destinations",
-        "label": "Destinations (Content Fragments)",
-        "multi": true,
-        "fields": [
-          {
-            "component": "aem-content-fragment",
-            "valueType": "string",
-            "name": "fileReference",
-            "label": "Destination (Content Fragment)",
-            "validation": {
-              "rootPath": "/content/dam/riyadh/content-fragments/destinations"
-            }
-          }
-        ]
-      },
+        "component": "aem-content-fragment",
+        "valueType": "string",
+        "name": "fileReference",
+        "label": "Destination (Content Fragment)",
+        "validation": {
+          "rootPath": "/content/dam/riyadh/content-fragments/destinations"
+        }
+      }
+    ]
+  },
+  {
+    "id": "destinations",
+    "fields": [
       {
         "component": "select",
         "valueType": "string",

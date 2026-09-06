@@ -19,7 +19,8 @@
       "search",
       "video",
       "teaser",
-      "destination"
+      "destination",
+      "destinations"
     ]
   },
   {
@@ -41,6 +42,12 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "destinations",
+    "components": [
+      "destination"
     ]
   },
   {
