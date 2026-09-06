@@ -113,20 +113,20 @@ async function loadCfCard(placeholder, destinationPath, style) {
 }
 
 /**
- * builds one destination card from a "content-fragment" model's field divs — the block's own
- * children. The Content Fragment reference is the only content source; the card is fetched
- * live from that fragment (fired in the background, not awaited here — see loadCfCard).
- * @param {Element[]} fields the field divs, in [fileReference] order
+ * builds one destination card for a single selected fragment path — one entry of the
+ * "destination" block's multi-value content-fragment field. The Content Fragment reference is
+ * the only content source; the card is fetched live from that fragment (fired in the
+ * background, not awaited here — see loadCfCard).
+ * @param {string} destinationPath the fragment's absolute DAM path (one item of the authored
+ * multi-value selection)
  * @param {string} [style] optional "style-<value>" modifier class for this card, e.g. the
  * containing "destination" block's own uniform style setting
- * @param {Element} [instrumentationSource] the authored element to move Universal Editor's
- * editing instrumentation from, if different from the rendered card itself
+ * @param {Element} [instrumentationSource] the authored element (the multi-field's own list
+ * item for this selection) to move Universal Editor's editing instrumentation from, so
+ * reordering/removal within the multi-field still works once this card replaces it
  * @returns {HTMLLIElement} the rendered (or not-yet-filled) <li class="destination-card">
  */
-export function buildDestinationCard(fields, style, instrumentationSource) {
-  const [fileReferenceDiv] = fields;
-  const destinationPath = fileReferenceDiv?.textContent.trim();
-
+export function buildDestinationCard(destinationPath, style, instrumentationSource) {
   const li = document.createElement('li');
   li.className = 'destination-card';
   if (instrumentationSource) moveInstrumentation(instrumentationSource, li);

@@ -200,22 +200,18 @@
     ]
   },
   {
-    "id": "content-fragment",
+    "id": "destination",
     "fields": [
       {
         "component": "aem-content-fragment",
         "valueType": "string",
-        "name": "fileReference",
-        "label": "Destination (Content Fragment)",
+        "name": "fragments",
+        "label": "Destinations (Content Fragments)",
+        "multi": true,
         "validation": {
           "rootPath": "/content/dam/riyadh/content-fragments/destinations"
         }
-      }
-    ]
-  },
-  {
-    "id": "destination",
-    "fields": [
+      },
       {
         "component": "select",
         "valueType": "string",

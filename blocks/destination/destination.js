@@ -83,21 +83,19 @@ function buildCarousel(block, slides) {
 
 /**
  * loads and decorates the destination block: a carousel built from the author-selected
- * "content-fragment" child blocks nested inside it (one per selected Destination content
- * fragment). Each card is built via buildDestinationCard, which fetches its own fragment's
- * content in the background — not awaited here, so this block never blocks the rest of the
- * page's sections from loading (see loadSections/loadSection in scripts/aem.js, which await
- * each section/block in sequence). Nested child blocks aren't picked up by the framework's own
- * decorateBlocks (which only decorates direct children of a section), so their field divs are
- * read directly here instead of going through content-fragment.js's own decorate().
+ * Destination content fragments — a single multi-value content-fragment field ("fragments"),
+ * rendered by Universal Editor as a list of reference links, one per selection. Each card is
+ * built via buildDestinationCard, which fetches its own fragment's content in the background —
+ * not awaited here, so this block never blocks the rest of the page's sections from loading
+ * (see loadSections/loadSection in scripts/aem.js, which await each section/block in sequence).
  * @param {Element} block The destination block element
  */
 export default function decorate(block) {
-  const [styleDiv] = block.children;
+  const [fragmentsDiv, styleDiv] = block.children;
   const style = styleDiv?.textContent.trim();
 
-  const slides = [...block.querySelectorAll(':scope div.content-fragment')]
-    .map((cf) => buildDestinationCard([...cf.children], style, cf));
+  const slides = [...(fragmentsDiv?.querySelectorAll('a[href]') ?? [])]
+    .map((a) => buildDestinationCard(a.getAttribute('href'), style, a.closest('li') || a));
 
   block.replaceChildren();
   if (slides.length) buildCarousel(block, slides);
