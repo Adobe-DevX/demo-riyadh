@@ -84,24 +84,21 @@ function buildCarousel(block, slides) {
 /**
  * loads and decorates the destinations block: a carousel built from the author-selected
  * "destination" items nested inside it — one per selected Destination content fragment, added
- * one at a time via Universal Editor's "+" control. Each item is a "block/item"-resourceType
- * child (same convention as the "cards"/"card" block pair), so — like cards.js — its row is
- * just one of this block's own direct children, not a separately-classed/decorated block; its
- * single field (a Content Fragment reference) is read directly from that row. Each card is
- * built via buildDestinationCard, which fetches its own fragment's content in the background —
- * not awaited here, so this block never blocks the rest of the page's sections from loading
- * (see loadSections/loadSection in scripts/aem.js, which await each section/block in sequence).
+ * one at a time via Universal Editor's "+" control. This block has no fields of its own — every
+ * direct child is a "destination" item row (same "block/item" resourceType convention as the
+ * "cards"/"card" block pair), so, like cards.js, each row is read directly rather than searched
+ * for by class name. Each card is built via buildDestinationCard, which fetches its own
+ * fragment's content in the background — not awaited here, so this block never blocks the rest
+ * of the page's sections from loading (see loadSections/loadSection in scripts/aem.js, which
+ * await each section/block in sequence).
  * @param {Element} block The destinations block element
  */
 export default function decorate(block) {
-  const [styleDiv, ...items] = block.children;
-  const style = styleDiv?.textContent.trim();
-
-  const slides = items
+  const slides = [...block.children]
     .map((row) => {
       const [fileReferenceDiv] = row.children;
       const path = fileReferenceDiv?.textContent.trim();
-      return path ? buildDestinationCard(path, style, row) : null;
+      return path ? buildDestinationCard(path, undefined, row) : null;
     })
     .filter((slide) => slide);
 
