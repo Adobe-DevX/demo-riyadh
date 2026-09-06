@@ -113,16 +113,16 @@ async function loadCfCard(placeholder, destinationPath, style) {
 }
 
 /**
- * builds one destination card from a "destination" block's own Content Fragment reference —
- * used both when a "destination" block is rendered standalone (see blocks/destination/
- * destination.js) and when it's nested as one of many inside a "destinations" carousel (see
- * blocks/destinations/destinations.js). The card is fetched live from that fragment (fired in
- * the background, not awaited here — see loadCfCard).
+ * builds one destination card from a "destination" item's Content Fragment reference — one
+ * row of the "destinations" block's own children, added one at a time via Universal Editor
+ * (see blocks/destinations/destinations.js). The card is fetched live from that fragment
+ * (fired in the background, not awaited here — see loadCfCard).
  * @param {string} destinationPath the fragment's absolute DAM path
- * @param {string} [style] optional "style-<value>" modifier class for this card, e.g. the
+ * @param {string} [style] optional "style-<value>" modifier class for this card, i.e. the
  * containing "destinations" block's own uniform style setting
- * @param {Element} [instrumentationSource] the authored "destination" block element to move
- * Universal Editor's editing instrumentation from, if different from the rendered card itself
+ * @param {Element} [instrumentationSource] the authored "destination" item row to move
+ * Universal Editor's editing instrumentation from, so it stays selectable/reorderable in the
+ * editor once this rendered card replaces it
  * @returns {HTMLLIElement} the rendered (or not-yet-filled) <li class="destination-card">
  */
 export function buildDestinationCard(destinationPath, style, instrumentationSource) {

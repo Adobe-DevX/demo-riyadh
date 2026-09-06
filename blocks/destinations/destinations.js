@@ -83,26 +83,25 @@ function buildCarousel(block, slides) {
 
 /**
  * loads and decorates the destinations block: a carousel built from the author-selected
- * "destination" child blocks nested inside it — one per selected Destination content
- * fragment, each a genuine top-level block (same resourceType as any other block, e.g.
- * teaser), added one at a time via Universal Editor. Each card is built via
- * buildDestinationCard, which fetches its own fragment's content in the background — not
- * awaited here, so this block never blocks the rest of the page's sections from loading (see
- * loadSections/loadSection in scripts/aem.js, which await each section/block in sequence).
- * Nested child blocks aren't picked up by the framework's own decorateBlocks (which only
- * decorates direct children of a section), so their field divs are read directly here instead
- * of going through destination.js's own decorate().
+ * "destination" items nested inside it — one per selected Destination content fragment, added
+ * one at a time via Universal Editor's "+" control. Each item is a "block/item"-resourceType
+ * child (same convention as the "cards"/"card" block pair), so — like cards.js — its row is
+ * just one of this block's own direct children, not a separately-classed/decorated block; its
+ * single field (a Content Fragment reference) is read directly from that row. Each card is
+ * built via buildDestinationCard, which fetches its own fragment's content in the background —
+ * not awaited here, so this block never blocks the rest of the page's sections from loading
+ * (see loadSections/loadSection in scripts/aem.js, which await each section/block in sequence).
  * @param {Element} block The destinations block element
  */
 export default function decorate(block) {
-  const [styleDiv] = block.children;
+  const [styleDiv, ...items] = block.children;
   const style = styleDiv?.textContent.trim();
 
-  const slides = [...block.querySelectorAll(':scope div.destination')]
-    .map((d) => {
-      const [fileReferenceDiv] = d.children;
+  const slides = items
+    .map((row) => {
+      const [fileReferenceDiv] = row.children;
       const path = fileReferenceDiv?.textContent.trim();
-      return path ? buildDestinationCard(path, style, d) : null;
+      return path ? buildDestinationCard(path, style, row) : null;
     })
     .filter((slide) => slide);
 

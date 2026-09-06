@@ -15,6 +15,21 @@
           }
         }
       }
+    },
+    {
+      "title": "Destination",
+      "id": "destination",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Destination",
+              "model": "destination"
+            }
+          }
+        }
+      }
     }
   ],
   "models": [
@@ -45,6 +60,20 @@
               "value": "text-only"
             }
           ]
+        }
+      ]
+    },
+    {
+      "id": "destination",
+      "fields": [
+        {
+          "component": "aem-content-fragment",
+          "valueType": "string",
+          "name": "fileReference",
+          "label": "Destination (Content Fragment)",
+          "validation": {
+            "rootPath": "/content/dam/riyadh/content-fragments/destinations"
+          }
         }
       ]
     }

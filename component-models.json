@@ -200,20 +200,6 @@
     ]
   },
   {
-    "id": "destination",
-    "fields": [
-      {
-        "component": "aem-content-fragment",
-        "valueType": "string",
-        "name": "fileReference",
-        "label": "Destination (Content Fragment)",
-        "validation": {
-          "rootPath": "/content/dam/riyadh/content-fragments/destinations"
-        }
-      }
-    ]
-  },
-  {
     "id": "destinations",
     "fields": [
       {
@@ -240,6 +226,20 @@
             "value": "text-only"
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "destination",
+    "fields": [
+      {
+        "component": "aem-content-fragment",
+        "valueType": "string",
+        "name": "fileReference",
+        "label": "Destination (Content Fragment)",
+        "validation": {
+          "rootPath": "/content/dam/riyadh/content-fragments/destinations"
+        }
       }
     ]
   },
