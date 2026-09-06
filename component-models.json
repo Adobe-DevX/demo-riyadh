@@ -205,7 +205,7 @@
       {
         "component": "aem-content-fragment",
         "valueType": "string",
-        "name": "fragments",
+        "name": "fileReference",
         "label": "Destinations (Content Fragments)",
         "multi": true,
         "validation": {
