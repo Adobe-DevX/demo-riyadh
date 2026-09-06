@@ -1,6 +1,6 @@
 // resolves a single Destination content fragment by its DAM path. The path itself comes from
-// a Universal Editor content-fragment picker (via the "content-fragment" block nested inside
-// "destination"), rather than a hand-typed slug, so it's always valid at the time it's authored.
+// a Universal Editor content-fragment picker on the "destination" block's own field, rather
+// than a hand-typed slug, so it's always valid at the time it's authored.
 import { moveInstrumentation } from './scripts.js';
 import getGraphqlHost, { isAuthorEnvironment } from './graphql-host.js';
 import { instrumentFragment, instrumentField } from './cf-instrumentation.js';
@@ -113,20 +113,19 @@ async function loadCfCard(placeholder, destinationPath, style) {
 }
 
 /**
- * builds one destination card for a single selected fragment path — one entry of the
- * "destination" block's multi-value content-fragment field. The Content Fragment reference is
- * the only content source; the card is fetched live from that fragment (fired in the
- * background, not awaited here — see loadCfCard).
- * @param {string} destinationPath the fragment's absolute DAM path (one item of the authored
- * multi-value selection)
- * @param {string} [style] optional "style-<value>" modifier class for this card, e.g. the
- * containing "destination" block's own uniform style setting
- * @param {Element} [instrumentationSource] the authored element (the multi-field's own list
- * item for this selection) to move Universal Editor's editing instrumentation from, so
- * reordering/removal within the multi-field still works once this card replaces it
+ * builds one destination card from a "destination" model's field divs — the block's own
+ * children. The Content Fragment reference is the only content source; the card is fetched
+ * live from that fragment (fired in the background, not awaited here — see loadCfCard).
+ * @param {Element[]} fields the field divs, in [fileReference, style] order
+ * @param {Element} [instrumentationSource] the authored element to move Universal Editor's
+ * editing instrumentation from, if different from the rendered card itself
  * @returns {HTMLLIElement} the rendered (or not-yet-filled) <li class="destination-card">
  */
-export function buildDestinationCard(destinationPath, style, instrumentationSource) {
+export function buildDestinationCard(fields, instrumentationSource) {
+  const [fileReferenceDiv, styleDiv] = fields;
+  const destinationPath = fileReferenceDiv?.textContent.trim();
+  const style = styleDiv?.textContent.trim();
+
   const li = document.createElement('li');
   li.className = 'destination-card';
   if (instrumentationSource) moveInstrumentation(instrumentationSource, li);

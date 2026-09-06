@@ -24,8 +24,7 @@
           "component": "aem-content-fragment",
           "valueType": "string",
           "name": "fileReference",
-          "label": "Destinations (Content Fragments)",
-          "multi": true,
+          "label": "Destination (Content Fragment)",
           "validation": {
             "rootPath": "/content/dam/riyadh/content-fragments/destinations"
           }

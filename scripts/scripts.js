@@ -123,6 +123,46 @@ export function decorateButtons(main) {
 }
 
 /**
+ * Wraps a "destination-carousel" styled section's block wrappers in a scrollable track and
+ * adds prev/next controls that scroll it by one card — the section's own style class already
+ * lays those wrappers out as a horizontally-scrolling, snap-scrolling row (see destination.css),
+ * this just adds the two floating buttons on top, matching the standalone "destination" block's
+ * per-card link icon rather than a full JS-driven carousel (no slide index/autoplay needed,
+ * since native scroll-snap already handles position).
+ * @param {Element} section a ".section.destination-carousel" element
+ */
+function decorateDestinationCarousel(section) {
+  const track = document.createElement('div');
+  track.className = 'destination-carousel-track';
+  track.append(...section.children);
+  section.append(track);
+
+  function scrollByCard(dir) {
+    const card = track.children[0];
+    if (!card) return;
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    const amount = card.getBoundingClientRect().width + gap;
+    track.scrollBy({ left: dir * amount, behavior: 'smooth' });
+  }
+
+  const prevButton = document.createElement('button');
+  prevButton.type = 'button';
+  prevButton.className = 'destination-carousel-control destination-carousel-control-prev';
+  prevButton.setAttribute('aria-label', 'Previous destination');
+  prevButton.innerHTML = '<span class="destination-carousel-arrow-icon"></span>';
+  prevButton.addEventListener('click', () => scrollByCard(-1));
+
+  const nextButton = document.createElement('button');
+  nextButton.type = 'button';
+  nextButton.className = 'destination-carousel-control destination-carousel-control-next';
+  nextButton.setAttribute('aria-label', 'Next destination');
+  nextButton.innerHTML = '<span class="destination-carousel-arrow-icon"></span>';
+  nextButton.addEventListener('click', () => scrollByCard(1));
+
+  section.append(prevButton, nextButton);
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -133,6 +173,7 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
+  main.querySelectorAll('.section.destination-carousel').forEach(decorateDestinationCarousel);
 }
 
 /**
