@@ -53,6 +53,14 @@
             {
               "name": "Cargo Section",
               "value": "cargo-section"
+            },
+            {
+              "name": "Footer Top",
+              "value": "footer-top"
+            },
+            {
+              "name": "Footer Legal",
+              "value": "footer-legal"
             }
           ]
         }
@@ -74,7 +82,8 @@
         "search",
         "video",
         "teaser",
-        "destination"
+        "destination",
+        "newsletter"
       ]
     }
   ]

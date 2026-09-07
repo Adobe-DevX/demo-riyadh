@@ -156,6 +156,14 @@
           {
             "name": "Cargo Section",
             "value": "cargo-section"
+          },
+          {
+            "name": "Footer Top",
+            "value": "footer-top"
+          },
+          {
+            "name": "Footer Legal",
+            "value": "footer-legal"
           }
         ]
       }
@@ -271,6 +279,39 @@
         "value": "",
         "label": "Text",
         "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "newsletter",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "heading",
+        "value": "",
+        "label": "Heading"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "emailPlaceholder",
+        "value": "Email address",
+        "label": "Email field label/placeholder"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "consent",
+        "value": "",
+        "label": "Consent checkbox text"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "terms",
+        "value": "",
+        "label": "Terms text"
       }
     ]
   },
