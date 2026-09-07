@@ -62,12 +62,12 @@ footer .footer .section.footer-top > .default-content-wrapper:first-child p {
 }
 
 footer .footer .section.footer-top > .default-content-wrapper:first-child .icon {
-  width: 40px;
+  width: 118px;
   height: 40px;
 }
 
 footer .footer .section.footer-top .newsletter-heading {
-  font-size: var(--heading-font-size-l);
+  font-size: 20px;
 }
 
 @media (width >= 900px) {
