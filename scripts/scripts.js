@@ -14,14 +14,18 @@ import {
 const LOCALES = ['en', 'ar'];
 
 /**
- * Determines the current page's locale from the first segment of the URL path — pages live
- * under a locale-prefixed root (e.g. "/en/index", "/ar/index") once language copies exist.
+ * Determines the current page's locale from the URL path — pages live under a locale-prefixed
+ * root (e.g. "/en/index", "/ar/index") once language copies exist. The locale segment isn't
+ * always first: Universal Editor's canvas resolves pages through the "/content/riyadh/" mapping
+ * in paths.json (which also matches "/content/riyadh/language-masters/…") rather than the more
+ * specific "language-masters" mapping, so it can preview a page at
+ * "/language-masters/en/index" instead of the published "/en/index". Scanning every segment
+ * (rather than only the first) makes locale detection work in both cases.
  * @returns {string|undefined} the locale code, or undefined when the path has no recognized
- *   locale prefix (e.g. a root-level page that hasn't been migrated under a locale root)
+ *   locale segment (e.g. a root-level page that hasn't been migrated under a locale root)
  */
 export function getLocale() {
-  const [, maybeLocale] = window.location.pathname.split('/');
-  return LOCALES.includes(maybeLocale) ? maybeLocale : undefined;
+  return window.location.pathname.split('/').find((segment) => LOCALES.includes(segment));
 }
 
 /**
