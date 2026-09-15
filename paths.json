@@ -1,7 +1,8 @@
 {
   "mappings": [
     "/content/riyadh/:/",
-    "/content/riyadh/language-masters/:/"
+    "/content/riyadh/language-masters/:/",
+    "/content/riyadh/redirects:/redirects.json"
   ],
   "includes": [
     "/content/riyadh/"

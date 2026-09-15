@@ -75,8 +75,8 @@ function getLocalizedPath(pathname, languages, code) {
 async function buildLanguageSwitcher(globeIcon) {
   const languages = await getAvailableLanguages();
   const { pathname } = window.location;
-  const [, maybeLocale] = pathname.split('/');
-  const current = languages.includes(maybeLocale) ? maybeLocale : languages[0];
+  const locale = getLocale();
+  const current = languages.includes(locale) ? locale : languages[0];
 
   const wrapper = document.createElement('span');
   wrapper.className = 'nav-lang';
