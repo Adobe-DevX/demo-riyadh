@@ -7,6 +7,17 @@ import { instrumentFragment, instrumentField } from './cf-instrumentation.js';
 
 const BY_PATH_QUERY = 'riyadh/destination-by-path';
 
+export function resolvePageHref(pagePath) {
+  if (!pagePath) return undefined;
+  const stripped = pagePath.replace(/^\/content\/[^/]+/, '').replace(/\/index$/, '');
+  return stripped || '/';
+}
+
+function getFieldHref(field) {
+  const link = field?.querySelector('a');
+  return link?.getAttribute('href') || link?.href || field?.textContent.trim();
+}
+
 /**
  * fetches a single Destination content fragment item by its DAM path
  * @param {string} aemHost the AEM host to fetch the persisted query from
@@ -42,16 +53,17 @@ export async function fetchDestinationByPath(aemHost, destinationPath) {
  * backgroundImage }), as returned by the "destination-by-path" persisted query
  * @param {string} aemHost the AEM host, used to resolve relative image paths
  * @param {string} [style] optional "style-<value>" modifier class for this card
+ * @param {string} [href] optional authored page path or URL for the card link
  * @returns {HTMLLIElement} the rendered card
  */
-function renderDestinationCard(item, aemHost, style) {
+function renderDestinationCard(item, aemHost, style, href) {
   const li = document.createElement('li');
   li.className = 'destination-card';
   if (style && style !== 'default') li.classList.add(`style-${style}`);
 
-  const wrapper = document.createElement('a');
+  const wrapper = href ? document.createElement('a') : document.createElement('div');
   wrapper.className = 'destination-card-link';
-  wrapper.href = '#';
+  if (href) wrapper.href = resolvePageHref(href) || href;
 
   // GraphQL's Content Fragment schema names these fields with a leading underscore.
   // _dynamicUrl (a pre-sized Dynamic Media rendition) is preferred over the raw DAM _path.
@@ -99,11 +111,11 @@ function renderDestinationCard(item, aemHost, style) {
 // the editor. Not awaited by the caller, so a CF-backed card never blocks the rest of the
 // page's sections from loading (see loadSections/loadSection in scripts/aem.js, which await
 // each section/block in sequence).
-async function loadCfCard(placeholder, destinationPath, style) {
+async function loadCfCard(placeholder, destinationPath, style, href) {
   const aemHost = getGraphqlHost();
   const item = await fetchDestinationByPath(aemHost, destinationPath);
   if (!item) return;
-  const card = renderDestinationCard(item, aemHost, style);
+  const card = renderDestinationCard(item, aemHost, style, href);
   placeholder.className = card.className;
   placeholder.replaceChildren(...card.childNodes);
   // the container's Content Fragment instrumentation goes on the placeholder — the element that
@@ -116,20 +128,21 @@ async function loadCfCard(placeholder, destinationPath, style) {
  * builds one destination card from a "destination" model's field divs — the block's own
  * children. The Content Fragment reference is the only content source; the card is fetched
  * live from that fragment (fired in the background, not awaited here — see loadCfCard).
- * @param {Element[]} fields the field divs, in [fileReference, style] order
+ * @param {Element[]} fields the field divs, in [fileReference, style, link] order
  * @param {Element} [instrumentationSource] the authored element to move Universal Editor's
  * editing instrumentation from, if different from the rendered card itself
  * @returns {HTMLLIElement} the rendered (or not-yet-filled) <li class="destination-card">
  */
 export function buildDestinationCard(fields, instrumentationSource) {
-  const [fileReferenceDiv, styleDiv] = fields;
+  const [fileReferenceDiv, styleDiv, linkDiv] = fields;
   const destinationPath = fileReferenceDiv?.textContent.trim();
   const style = styleDiv?.textContent.trim();
+  const href = getFieldHref(linkDiv);
 
   const li = document.createElement('li');
   li.className = 'destination-card';
   if (instrumentationSource) moveInstrumentation(instrumentationSource, li);
 
-  if (destinationPath) loadCfCard(li, destinationPath, style);
+  if (destinationPath) loadCfCard(li, destinationPath, style, href);
   return li;
 }
