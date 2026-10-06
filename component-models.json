@@ -256,12 +256,14 @@
     "id": "destinations-details",
     "fields": [
       {
-        "component": "text",
+        "component": "aem-content-fragment",
         "valueType": "string",
-        "name": "slug",
-        "label": "Destination Slug",
-        "description": "The slug of the Destination Content Fragment to display, e.g. \"bangkok\"",
-        "required": true
+        "name": "fileReference",
+        "label": "Destination (Content Fragment)",
+        "required": true,
+        "validation": {
+          "rootPath": "/content/dam/riyadh/content-fragments/destinations"
+        }
       }
     ]
   },

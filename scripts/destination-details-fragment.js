@@ -1,39 +1,22 @@
-// resolves a single Destination content fragment by its "slug" field (authored as plain text on
-// the "destinations-details" block) and renders it as a destination detail view: a page-level
-// heading, a hero image and an introductory sub-heading + description.
-//
-// Expected persisted query in AEM (Tools > General > GraphQL Query Editor), saved as
-// "riyadh/destination-by-slug":
-//
-//   query ($slug: String!) {
-//     destinationsList(filter: { slug: { _expressions: [{ value: $slug }] } }, limit: 1) {
-//       items {
-//         _path
-//         slug
-//         destinationCity
-//         destinationCountry
-//         title
-//         subtitle
-//         description { html plaintext }
-//         backgroundImage {
-//           ... on ImageRef { _path _dynamicUrl width height }
-//         }
-//       }
-//     }
-//   }
+// resolves a single Destination content fragment by its DAM path (picked with a Universal Editor
+// content-fragment picker on the "destinations-details" block) through the existing persisted
+// query "riyadh/destination-by-path" and renders it as a destination detail view: a page-level
+// heading, a hero image and an introductory sub-heading + description. The sub-heading and
+// description are rendered only when the query returns "subtitle" / "description" fields.
 import getGraphqlHost, { isAuthorEnvironment } from './graphql-host.js';
 import { instrumentFragment, instrumentField } from './cf-instrumentation.js';
 
-const BY_SLUG_QUERY = 'riyadh/destination-by-slug';
+const BY_PATH_QUERY = 'riyadh/destination-by-path';
 
 /**
- * fetches a single Destination content fragment item by its slug
+ * fetches a single Destination content fragment item by its DAM path
  * @param {string} aemHost the AEM host to fetch the persisted query from
- * @param {string} slug the destination's slug, e.g. "bangkok"
+ * @param {string} destinationPath the fragment's absolute DAM path
  * @returns {Promise<object|null>} the matching item, or null if not found
  */
-export async function fetchDestinationBySlug(aemHost, slug) {
-  const url = `${aemHost}/graphql/execute.json/${BY_SLUG_QUERY};slug=${encodeURIComponent(slug)}`;
+export async function fetchDestinationByPath(aemHost, destinationPath) {
+  // deliberately NOT url-encoded: the persisted query expects the literal path with slashes
+  const url = `${aemHost}/graphql/execute.json/${BY_PATH_QUERY};destinationPath=${destinationPath}`;
   try {
     // when authoring, bypass the browser HTTP cache so a just-edited Content Fragment shows
     // up on Universal Editor's post-edit reload; published pages keep the caching
@@ -41,11 +24,10 @@ export async function fetchDestinationBySlug(aemHost, slug) {
     if (!res.ok) throw new Error(`GraphQL request failed: ${res.status}`);
     const json = await res.json();
     if (json.errors) throw new Error(`GraphQL errors: ${JSON.stringify(json.errors)}`);
-    const result = Object.values(json?.data || {})[0];
-    return result?.items?.[0] || result?.item || null;
+    return json?.data?.destinationsByPath?.item || null;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(`destination-details-fragment: failed to load slug "${slug}"`, error);
+    console.error(`destination-details-fragment: failed to load path "${destinationPath}"`, error);
     return null;
   }
 }
@@ -61,7 +43,7 @@ function resolveImageUrl(item, aemHost) {
 
 /**
  * renders a Destination content fragment item as the destination detail view
- * @param {object} item the content fragment item, as returned by "destination-by-slug"
+ * @param {object} item the content fragment item, as returned by "destination-by-path"
  * @param {string} aemHost the AEM host, used to resolve relative image paths
  * @returns {DocumentFragment} the rendered markup
  */
@@ -124,14 +106,14 @@ export function renderDestinationDetails(item, aemHost) {
 }
 
 /**
- * loads the Destination content fragment for the given slug and renders it into container
+ * loads the Destination content fragment for the given path and renders it into container
  * @param {Element} container the element to render into (keeps its own attributes)
- * @param {string} slug the destination's slug
+ * @param {string} destinationPath the fragment's DAM path
  * @returns {Promise<boolean>} true when a fragment was found and rendered
  */
-export async function loadDestinationDetails(container, slug) {
+export async function loadDestinationDetails(container, destinationPath) {
   const aemHost = getGraphqlHost();
-  const item = await fetchDestinationBySlug(aemHost, slug);
+  const item = await fetchDestinationByPath(aemHost, destinationPath);
   if (!item) return false;
   container.replaceChildren(renderDestinationDetails(item, aemHost));
   // eslint-disable-next-line no-underscore-dangle
