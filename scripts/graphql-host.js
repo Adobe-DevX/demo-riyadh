@@ -21,3 +21,11 @@ export function isAuthorEnvironment() {
 export default function getGraphqlHost() {
   return isAuthorEnvironment() ? AUTHOR_HOST : PUBLISH_HOST;
 }
+
+/**
+ * the AEM publish host, for blocks that must read published content only
+ * @returns {string} the AEM publish host
+ */
+export function getPublishHost() {
+  return PUBLISH_HOST;
+}

@@ -3,7 +3,7 @@
 // query "riyadh/destination-by-path" and renders it as a destination detail view: a page-level
 // heading, a hero image and an introductory sub-heading + description. The sub-heading and
 // description are rendered only when the query returns "subtitle" / "description" fields.
-import getGraphqlHost, { isAuthorEnvironment } from './graphql-host.js';
+import { getPublishHost } from './graphql-host.js';
 import { instrumentFragment, instrumentField } from './cf-instrumentation.js';
 
 const BY_PATH_QUERY = 'riyadh/destination-by-path';
@@ -18,9 +18,7 @@ export async function fetchDestinationByPath(aemHost, destinationPath) {
   // deliberately NOT url-encoded: the persisted query expects the literal path with slashes
   const url = `${aemHost}/graphql/execute.json/${BY_PATH_QUERY};destinationPath=${destinationPath}`;
   try {
-    // when authoring, bypass the browser HTTP cache so a just-edited Content Fragment shows
-    // up on Universal Editor's post-edit reload; published pages keep the caching
-    const res = await fetch(url, isAuthorEnvironment() ? { cache: 'no-store' } : undefined);
+    const res = await fetch(url);
     if (!res.ok) throw new Error(`GraphQL request failed: ${res.status}`);
     const json = await res.json();
     if (json.errors) throw new Error(`GraphQL errors: ${JSON.stringify(json.errors)}`);
@@ -112,7 +110,7 @@ export function renderDestinationDetails(item, aemHost) {
  * @returns {Promise<boolean>} true when a fragment was found and rendered
  */
 export async function loadDestinationDetails(container, destinationPath) {
-  const aemHost = getGraphqlHost();
+  const aemHost = getPublishHost();
   const item = await fetchDestinationByPath(aemHost, destinationPath);
   if (!item) return false;
   container.replaceChildren(renderDestinationDetails(item, aemHost));
