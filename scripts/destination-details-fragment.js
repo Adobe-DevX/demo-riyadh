@@ -50,14 +50,24 @@ export function renderDestinationDetails(item, aemHost) {
   const fragment = document.createDocumentFragment();
   const city = item.destinationCity || '';
 
+  const header = document.createElement('div');
+  header.className = 'destinations-details-header';
+  if (item.destinationCountry) {
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'destinations-details-eyebrow';
+    eyebrow.textContent = item.destinationCountry;
+    instrumentField(eyebrow, 'destinationCountry', 'text', 'Country');
+    header.append(eyebrow);
+  }
   const title = item.title || (city ? `Flights to ${city}` : '');
   if (title) {
     const h1 = document.createElement('h1');
     h1.className = 'destinations-details-title';
     h1.textContent = title;
     instrumentField(h1, item.title ? 'title' : 'destinationCity', 'text', 'Title');
-    fragment.append(h1);
+    header.append(h1);
   }
+  if (header.children.length) fragment.append(header);
 
   const imageUrl = resolveImageUrl(item, aemHost);
   if (imageUrl) {

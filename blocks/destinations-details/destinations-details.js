@@ -1,32 +1,70 @@
 import { loadDestinationDetails } from '../../scripts/destination-details-fragment.js';
+import { resolvePageHref } from '../../scripts/destination-fragment.js';
+
+function getFieldHref(row) {
+  const link = row?.querySelector('a');
+  return link?.getAttribute('href') || row?.textContent.trim() || '';
+}
+
+/**
+ * resolves the home page of the current language, e.g. "/en/" on aem.page/aem.live or
+ * "/content/riyadh/en/index.html" on the AEM author instance
+ * @returns {string} the home page href
+ */
+export function getHomeHref() {
+  const { pathname } = window.location;
+  const author = pathname.match(/^(\/content\/[^/]+\/(?:[^/]+\/)*?[a-z]{2}(?:-[a-z]{2})?)(?=[/.]|$)/i);
+  if (author) return `${author[1]}/index.html`;
+  const lang = pathname.match(/^\/([a-z]{2}(?:-[a-z]{2})?)(?=\/|$)/i);
+  return lang ? `/${lang[1]}/` : '/';
+}
+
+function buildBackLink(href, label) {
+  const nav = document.createElement('nav');
+  nav.className = 'destinations-details-nav';
+  nav.setAttribute('aria-label', 'Breadcrumb');
+  const a = document.createElement('a');
+  a.className = 'destinations-details-back';
+  a.href = href;
+  const icon = document.createElement('span');
+  icon.className = 'destinations-details-back-icon';
+  icon.setAttribute('aria-hidden', 'true');
+  a.append(icon, document.createTextNode(label));
+  nav.append(a);
+  return nav;
+}
+
+function buildEmpty(message) {
+  const empty = document.createElement('p');
+  empty.className = 'destinations-details-empty';
+  empty.textContent = message;
+  return empty;
+}
 
 /**
  * loads and decorates the destinations-details block
  * @param {Element} block The block element
  */
 export default async function decorate(block) {
-  const destinationPath = block.children[0]?.textContent.trim();
+  const [pathRow, backLinkRow, backTextRow] = [...block.children];
+  const destinationPath = pathRow?.textContent.trim();
+  let backHref = getFieldHref(backLinkRow);
+  // authored /content/... paths only resolve on author; map them to site paths elsewhere
+  if (backHref.startsWith('/content/') && !window.location.pathname.startsWith('/content/')) {
+    backHref = resolvePageHref(backHref);
+  }
+  backHref = backHref || getHomeHref();
+  const backText = backTextRow?.textContent.trim() || 'Back to home';
   block.textContent = '';
 
   const container = document.createElement('div');
   container.className = 'destinations-details-container';
 
   if (!destinationPath) {
-    const empty = document.createElement('p');
-    empty.className = 'destinations-details-empty';
-    empty.textContent = 'Select a destination content fragment to render destination details.';
-    container.append(empty);
-    block.append(container);
-    return;
+    container.append(buildEmpty('Select a destination content fragment to render destination details.'));
+  } else if (!(await loadDestinationDetails(container, destinationPath))) {
+    container.replaceChildren(buildEmpty(`No destination found for "${destinationPath}".`));
   }
 
-  const loaded = await loadDestinationDetails(container, destinationPath);
-  if (!loaded) {
-    const empty = document.createElement('p');
-    empty.className = 'destinations-details-empty';
-    empty.textContent = `No destination found for "${destinationPath}".`;
-    container.replaceChildren(empty);
-  }
-
-  block.append(container);
+  block.append(buildBackLink(backHref, backText), container);
 }
