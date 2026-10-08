@@ -29,6 +29,19 @@
           "validation": {
             "rootPath": "/content/dam/riyadh/content-fragments/destinations"
           }
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "backLink",
+          "label": "Back Link (defaults to home page)"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "backLinkText",
+          "label": "Back Link Text",
+          "value": "Back to home"
         }
       ]
     }
