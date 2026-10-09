@@ -1,5 +1,6 @@
 /* back to home navigation */
 .destinations-details .destinations-details-nav {
+  display: none;
   margin-bottom: 24px;
 }
 
