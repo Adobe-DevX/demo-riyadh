@@ -1,22 +1,10 @@
 import { loadDestinationDetails } from '../../scripts/destination-details-fragment.js';
 import { resolvePageHref } from '../../scripts/destination-fragment.js';
+import { getHomeHref } from '../../scripts/scripts.js';
 
 function getFieldHref(row) {
   const link = row?.querySelector('a');
   return link?.getAttribute('href') || row?.textContent.trim() || '';
-}
-
-/**
- * resolves the home page of the current language, e.g. "/en/" on aem.page/aem.live or
- * "/content/riyadh/en/index.html" on the AEM author instance
- * @returns {string} the home page href
- */
-export function getHomeHref() {
-  const { pathname } = window.location;
-  const author = pathname.match(/^(\/content\/[^/]+\/(?:[^/]+\/)*?[a-z]{2}(?:-[a-z]{2})?)(?=[/.]|$)/i);
-  if (author) return `${author[1]}/index.html`;
-  const lang = pathname.match(/^\/([a-z]{2}(?:-[a-z]{2})?)(?=\/|$)/i);
-  return lang ? `/${lang[1]}/` : '/';
 }
 
 function buildBackLink(href, label) {

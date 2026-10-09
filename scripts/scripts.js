@@ -33,6 +33,19 @@ export function getLocale() {
 }
 
 /**
+ * Resolves the current language's home page, preserving authoring path prefixes.
+ * @returns {string} the home page href
+ */
+export function getHomeHref() {
+  const { pathname } = window.location;
+  const segments = pathname.split('/');
+  const localeIndex = segments.findIndex((segment) => LOCALE_SEGMENT_RE.test(segment));
+  if (localeIndex < 0) return '/';
+  const root = segments.slice(0, localeIndex + 1).join('/');
+  return pathname.startsWith('/content/') ? `${root}/index.html` : `${root}/`;
+}
+
+/**
  * Moves all the attributes from a given elmenet to another given element.
  * @param {Element} from the element to copy attributes from
  * @param {Element} to the element to copy attributes to

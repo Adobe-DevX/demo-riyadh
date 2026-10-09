@@ -1,5 +1,5 @@
 import { getMetadata } from '../../scripts/aem.js';
-import { getLocale } from '../../scripts/scripts.js';
+import { getHomeHref, getLocale } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 // media query match that indicates mobile/tablet width
@@ -267,6 +267,18 @@ export default async function decorate(block) {
   if (brandLink) {
     brandLink.className = '';
     brandLink.closest('.button-container').className = '';
+  }
+
+  const logo = navBrand.querySelector('.icon-riyadh_icon, img, picture');
+  if (logo) {
+    let homeLink = logo.closest('a');
+    if (!homeLink) {
+      homeLink = document.createElement('a');
+      logo.replaceWith(homeLink);
+      homeLink.append(logo);
+    }
+    homeLink.href = getHomeHref();
+    homeLink.setAttribute('aria-label', 'Riyadh Air home');
   }
 
   const navSections = nav.querySelector('.nav-sections');
